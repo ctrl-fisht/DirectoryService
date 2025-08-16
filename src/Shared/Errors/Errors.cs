@@ -1,0 +1,64 @@
+﻿namespace Shared.Errors;
+
+public static partial class Errors
+{
+    public static partial class Validation
+    {
+        public static Error CannotBeEmpty(string name)
+        {
+            return Error.Validation("param.is.empty", $"Parameter '{name}' cannot be empty");
+        }
+
+        public static Error LengthNotInRange(string name, int min, int max)
+        {
+            return Error.Validation(
+                "param.bad.length",
+                $"Parameter '{name}' length must be between {min} and {max}");
+        }
+
+        public static Error BadFormat(string name, string allowed)
+        {
+            return Error.Validation(
+                "param.bad.format",
+                $"Parameter '{name}' has invalid format. Allowed: '{allowed}'");
+        }
+
+        public static Error TooLong(string name, int max)
+        {
+            return Error.Validation(
+                "param.bad.length",
+                $"Parameter '{name}' is too long. Max: '{max}' symbols");
+        } 
+    }
+
+    public partial class General
+    {
+        public static Error NotFound(string id)
+        {
+            return Error.Validation("record.not.found", $"Record with given id='{id}' was not found");
+        }
+    }
+
+    public partial class Hierarchy
+    {
+        public static Error CannotAddSelfAsAChild()
+        {
+            return Error.Failure("cannot.add.self", "Cannot add self as a child");
+        }
+        
+        public static Error CannotAddSelfAsAParent()
+        {
+            return Error.Failure("cannot.add.self", "Cannot add self as a parent");
+        }
+
+        public static Error CannotAddAncestor()
+        {
+            return Error.Failure("cannot.add.ancestor", "Cannot add ancestor as a child");
+        }
+
+        public static Error ParentHasNoSuchChild(string parentId)
+        {
+            return Error.Failure("parent.no.child", $"Given parent '{parentId}' has no such child");
+        }
+    }
+}
