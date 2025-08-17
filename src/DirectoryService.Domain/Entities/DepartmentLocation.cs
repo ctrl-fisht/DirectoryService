@@ -6,7 +6,10 @@ public class DepartmentLocation
     public Guid LocationId { get; set; }
     public Department  Department { get; set; }
     public Location  Location { get; set; }
-
+    
+    // efcore
+    private DepartmentLocation() {}
+    
     private DepartmentLocation(Guid departmentId, Guid locationId, Department department, Location  location)
     {
         DepartmentId = departmentId;

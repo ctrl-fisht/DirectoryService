@@ -5,7 +5,10 @@ using Shared.Errors;
 namespace DirectoryService.Domain.ValueObjects;
 
 public record DepartmentName
-{
+{  
+    // efcore
+    private DepartmentName() {}
+    
     public string Value { get;}
     private DepartmentName(string name)
     {

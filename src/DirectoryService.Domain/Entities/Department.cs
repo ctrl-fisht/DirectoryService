@@ -6,6 +6,8 @@ namespace DirectoryService.Domain.Entities;
 
 public class Department
 {
+    // efcore
+    private Department() {}
     private Department(Guid id,
         DepartmentName departmentName,
         Identifier identifier, 
@@ -29,6 +31,7 @@ public class Department
     public Guid Id { get; private set; }
     public DepartmentName DepartmentName { get; private set; }
     public Identifier Identifier { get; private set; }
+    public Guid? ParentId { get; private set; }
     public Department? Parent { get; private set; }
     public DeparmentPath Path { get; private set; }
     public int Depth { get; private set; }
@@ -77,8 +80,9 @@ public class Department
 
         if (parent.Children.FirstOrDefault(c => c.Id == this.Id) == null)
             return Errors.Hierarchy.ParentHasNoSuchChild(parent.Id.ToString());
-
+    
         Parent = parent;
+        ParentId = parent.Id;
         return UnitResult.Success<Error>();
     }
     
@@ -141,7 +145,7 @@ public class Department
         int depth = 1;
         if (parent != null)
             depth = parent.Depth + 1;
-        
+            
         return new Department(id, departmentName, identifier, parent, pathCreateResult.Value, depth);
     }
 }

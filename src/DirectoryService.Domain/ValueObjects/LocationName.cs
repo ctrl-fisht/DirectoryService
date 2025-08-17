@@ -7,6 +7,11 @@ namespace DirectoryService.Domain.ValueObjects;
 public record LocationName
 {
     public string Value { get; }
+    
+    
+    // efcore
+    private LocationName() {}
+    
     private LocationName(string name)
     {
         Value = name;

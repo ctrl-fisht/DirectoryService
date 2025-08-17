@@ -6,6 +6,7 @@ namespace DirectoryService.Domain.ValueObjects;
 
 public record DeparmentPath
 {
+    private DeparmentPath() { }
     public string Value { get;}
 
     private DeparmentPath(string path)
@@ -20,6 +21,6 @@ public record DeparmentPath
             return Errors.Validation.BadFormat(nameof(path), "Latin letters, dots, hyphen");
         }
 
-        return new DeparmentPath(path);
+        return new DeparmentPath(path.ToLower());
     }
 }

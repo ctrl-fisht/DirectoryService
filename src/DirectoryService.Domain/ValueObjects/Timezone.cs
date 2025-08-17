@@ -7,6 +7,9 @@ public record Timezone
 {
     public string Value { get; }
 
+    // efcore
+    private Timezone(){}
+
     private Timezone(string timezone)
     {
         Value = timezone;

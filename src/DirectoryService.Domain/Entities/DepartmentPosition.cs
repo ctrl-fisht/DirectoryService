@@ -6,7 +6,11 @@ public class DepartmentPosition
     public Guid PositionId { get; set; }
     public Department  Department { get; set; }
     public Position Position { get; set; }
-
+    
+    
+    // efcore
+    private DepartmentPosition() { }
+    
     private DepartmentPosition(Guid departmentId, Guid positionId, Department department, Position  position)
     {
         DepartmentId = departmentId;

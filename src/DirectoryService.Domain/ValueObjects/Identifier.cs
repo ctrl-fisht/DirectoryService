@@ -6,6 +6,8 @@ namespace DirectoryService.Domain.ValueObjects;
 
 public record Identifier
 {
+    // efcore
+    private Identifier() { }
     public string Value { get;}
 
     private Identifier(string identifier)
