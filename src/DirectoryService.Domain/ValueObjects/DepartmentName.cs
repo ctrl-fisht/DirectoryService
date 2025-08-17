@@ -5,11 +5,11 @@ using Shared.Errors;
 namespace DirectoryService.Domain.ValueObjects;
 
 public record DepartmentName
-{
+{  
     public string Value { get;}
-    private DepartmentName(string name)
+    private DepartmentName(string value)
     {
-        Value = name;
+        Value = value;
     }
 
     public static Result<DepartmentName, Error> Create(string name)

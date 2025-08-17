@@ -7,9 +7,10 @@ namespace DirectoryService.Domain.ValueObjects;
 public record LocationName
 {
     public string Value { get; }
-    private LocationName(string name)
+    
+    private LocationName(string value)
     {
-        Value = name;
+        Value = value;
     }
 
     public static Result<LocationName, Error> Create(string name)

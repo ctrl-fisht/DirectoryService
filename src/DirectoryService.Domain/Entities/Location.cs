@@ -18,6 +18,10 @@ public class Location
     private readonly List<DepartmentLocation> _departmentLocations = [];
     public IReadOnlyList<DepartmentLocation> DepartmentLocations => _departmentLocations.AsReadOnly();
 
+    
+    // efcore
+    private Location() {}
+    
     public UnitResult<Error> AddDepartmentLocation(DepartmentLocation departmentLocation)
     {
         _departmentLocations.Add(departmentLocation);

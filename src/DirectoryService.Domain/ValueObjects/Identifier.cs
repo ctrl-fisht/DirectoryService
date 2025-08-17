@@ -8,9 +8,9 @@ public record Identifier
 {
     public string Value { get;}
 
-    private Identifier(string identifier)
+    private Identifier(string value)
     {
-        Value = identifier;
+        Value = value;
     }
 
     public static Result<Identifier, Error> Create(string identifier)

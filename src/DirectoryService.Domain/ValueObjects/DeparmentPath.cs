@@ -8,9 +8,9 @@ public record DeparmentPath
 {
     public string Value { get;}
 
-    private DeparmentPath(string path)
+    private DeparmentPath(string value)
     {
-        Value = path;
+        Value = value;
     }
 
     public static Result<DeparmentPath, Error> Create(string path)
@@ -20,6 +20,6 @@ public record DeparmentPath
             return Errors.Validation.BadFormat(nameof(path), "Latin letters, dots, hyphen");
         }
 
-        return new DeparmentPath(path);
+        return new DeparmentPath(path.ToLower());
     }
 }

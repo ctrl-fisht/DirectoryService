@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Text.RegularExpressions;
+using CSharpFunctionalExtensions;
 using Shared.Errors;
 
 namespace DirectoryService.Domain.Entities;
@@ -53,9 +54,14 @@ public class Position
                 nameof(name),
                 Constants.PositionConstants.NameMinLength,
                 Constants.PositionConstants.NameMaxLength);
-
-
-
+        
+        if (!Regex.IsMatch(name, @"^[A-Za-zА-Яа-яЁё\s.-]+$"))
+        {
+            return Errors.Validation.BadFormat(
+                nameof(name), 
+                "Cyrillic, Latin, spaces, hyphen, dots");
+        }
+        
         if (!string.IsNullOrWhiteSpace(description) 
             && description.Length > Constants.PositionConstants.DescriptionMaxLength)
         {
