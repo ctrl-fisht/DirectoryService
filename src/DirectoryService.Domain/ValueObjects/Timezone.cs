@@ -6,13 +6,10 @@ namespace DirectoryService.Domain.ValueObjects;
 public record Timezone
 {
     public string Value { get; }
-
-    // efcore
-    private Timezone(){}
-
-    private Timezone(string timezone)
+    
+    private Timezone(string value)
     {
-        Value = timezone;
+        Value = value;
     }
 
     public static Result<Timezone, Error> Create(string timezone)

@@ -8,13 +8,9 @@ public record LocationName
 {
     public string Value { get; }
     
-    
-    // efcore
-    private LocationName() {}
-    
-    private LocationName(string name)
+    private LocationName(string value)
     {
-        Value = name;
+        Value = value;
     }
 
     public static Result<LocationName, Error> Create(string name)

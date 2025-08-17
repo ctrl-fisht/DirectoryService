@@ -6,12 +6,11 @@ namespace DirectoryService.Domain.ValueObjects;
 
 public record DeparmentPath
 {
-    private DeparmentPath() { }
     public string Value { get;}
 
-    private DeparmentPath(string path)
+    private DeparmentPath(string value)
     {
-        Value = path;
+        Value = value;
     }
 
     public static Result<DeparmentPath, Error> Create(string path)
