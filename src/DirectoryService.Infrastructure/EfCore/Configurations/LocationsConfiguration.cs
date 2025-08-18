@@ -36,6 +36,10 @@ public class LocationsConfiguration : IEntityTypeConfiguration<Location>
             tb.HasCheckConstraint(
                 "CK_locations_address_building",
                 "\"address_building\" ~ '^[A-Za-zА-Яа-яЁё0-9 \\-]+$'");
+
+            tb.HasCheckConstraint(
+                "CK_locations_address_room",
+                $"\"address_room\" > 0");
         });
 
         builder.HasKey(l => l.Id);
@@ -63,6 +67,8 @@ public class LocationsConfiguration : IEntityTypeConfiguration<Location>
                 .HasColumnName("address_street");
             ab.Property(a => a.Building)
                 .HasColumnName("address_building");
+            ab.Property(a => a.RoomNumber)
+                .HasColumnName("address_room");
         });
 
         builder.ComplexProperty(l => l.Timezone, tb =>

@@ -40,6 +40,11 @@ public class Location
         LocationName = locationName;
         Address = address;
         Timezone = timezone;
+        
+        IsActive = true;
+        var utcNow = DateTime.UtcNow;
+        CreatedAt = utcNow;
+        UpdatedAt = utcNow;
     }
 
     public static Result<Location, Error> Create(LocationName locationName, Address address, Timezone timezone)

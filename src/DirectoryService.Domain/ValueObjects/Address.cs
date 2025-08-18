@@ -10,16 +10,24 @@ public record Address
     public string City { get; }
     public string Street { get; }
     public string Building { get; }
-
-    private Address(string country, string city, string street, string building)
+    
+    public int RoomNumber { get; }
+    
+    private Address(string country, string city, string street, string building, int roomNumber)
     {
         Country = country;
         City = city;
         Street = street;
         Building = building;
+        RoomNumber = roomNumber;
     }
 
-    public static Result<Address, Error> Create(string country, string city, string street, string building)
+    public static Result<Address, Error> Create(
+        string country,
+        string city,
+        string street,
+        string building,
+        int roomNumber)
     {
         if (string.IsNullOrWhiteSpace(country))
             return Errors.Validation.CannotBeEmpty(nameof(country));
@@ -32,7 +40,7 @@ public record Address
 
         if (string.IsNullOrWhiteSpace(building))
             return Errors.Validation.CannotBeEmpty(nameof(building));
-
+        
         // Можно добавить регулярки, если нужны ограничения на символы
         var nameRegex = @"^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9\s.\-]+$";
 
@@ -47,7 +55,11 @@ public record Address
 
         if (!Regex.IsMatch(building, @"^[A-Za-zА-Яа-яЁё0-9\s\-]+$"))
             return Errors.Validation.BadFormat(nameof(building), "Cyrillic, Latin, digits, spaces, hyphen");
-
-        return Result.Success<Address, Error>(new Address(country, city, street, building));
+        
+        if (roomNumber < 1)
+            return Errors.Validation.MustBeGreaterOrEqualThan(nameof(roomNumber), 1);
+        
+        
+        return Result.Success<Address, Error>(new Address(country, city, street, building, roomNumber));
     }
 }
