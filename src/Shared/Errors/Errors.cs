@@ -1,71 +1,28 @@
-﻿namespace Shared.Errors;
+﻿using System.Collections;
 
-public static partial class Errors
+namespace Shared.Errors;
+
+public class Errors : IEnumerable<Error>
 {
-    public static partial class Validation
+    private readonly List<Error> _errors;
+
+    public Errors(Error error)
     {
-        public static Error CannotBeEmpty(string name)
-        {
-            return Error.Validation("param.is.empty", $"Parameter '{name}' cannot be empty");
-        }
-
-        public static Error LengthNotInRange(string name, int min, int max)
-        {
-            return Error.Validation(
-                "param.bad.length",
-                $"Parameter '{name}' length must be between {min} and {max}");
-        }
-
-        public static Error BadFormat(string name, string allowed)
-        {
-            return Error.Validation(
-                "param.bad.format",
-                $"Parameter '{name}' has invalid format. Allowed: '{allowed}'");
-        }
-
-        public static Error TooLong(string name, int max)
-        {
-            return Error.Validation(
-                "param.bad.length",
-                $"Parameter '{name}' is too long. Max: '{max}' symbols");
-        }
-
-        public static Error MustBeGreaterOrEqualThan(string name, int min)
-        {
-            return Error.Validation(
-                "param.too.small",
-                $"Parameter '{name}' must be greater than or equal to '{min}'");
-        }
+        _errors =  new List<Error> { error };
     }
 
-    public partial class General
+    public Errors(IEnumerable<Error> errors)
     {
-        public static Error NotFound(string id)
-        {
-            return Error.Validation("record.not.found", $"Record with given id='{id}' was not found");
-        }
+        _errors = new List<Error>(errors);
+    }
+    
+    public IEnumerator<Error> GetEnumerator()
+    {
+        return _errors.GetEnumerator();
     }
 
-    public partial class Hierarchy
+    IEnumerator IEnumerable.GetEnumerator()
     {
-        public static Error CannotAddSelfAsAChild()
-        {
-            return Error.Failure("cannot.add.self", "Cannot add self as a child");
-        }
-        
-        public static Error CannotAddSelfAsAParent()
-        {
-            return Error.Failure("cannot.add.self", "Cannot add self as a parent");
-        }
-
-        public static Error CannotAddAncestor()
-        {
-            return Error.Failure("cannot.add.ancestor", "Cannot add ancestor as a child");
-        }
-
-        public static Error ParentHasNoSuchChild(string parentId)
-        {
-            return Error.Failure("parent.no.child", $"Given parent '{parentId}' has no such child");
-        }
+        return GetEnumerator();
     }
 }

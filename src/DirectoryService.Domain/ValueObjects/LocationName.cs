@@ -16,12 +16,12 @@ public record LocationName
     public static Result<LocationName, Error> Create(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return Errors.Validation.CannotBeEmpty(nameof(name));
+            return AppErrors.Validation.CannotBeEmpty(nameof(name));
 
         if (name.Length < Constants.LocationConstants.NameMinLength 
             || name.Length > Constants.LocationConstants.NameMaxLength)
         {
-            return Errors.Validation.LengthNotInRange(
+            return AppErrors.Validation.LengthNotInRange(
                 nameof(name),
                 Constants.LocationConstants.NameMinLength,
                 Constants.LocationConstants.NameMaxLength);
@@ -29,7 +29,7 @@ public record LocationName
 
         if (!Regex.IsMatch(name, @"^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9\s.\-]+$"))
         {
-            return Errors.Validation.BadFormat(nameof(name), "Cyrillic,Latin, spaces, hyphen, dots");
+            return AppErrors.Validation.BadFormat(nameof(name), "Cyrillic,Latin, spaces, hyphen, dots");
         }
         
         return new LocationName(name);

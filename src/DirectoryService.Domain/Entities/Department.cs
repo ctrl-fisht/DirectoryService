@@ -76,10 +76,10 @@ public class Department
     public UnitResult<Error> SetParent(Department parent)
     {
         if (parent == this)
-            return Errors.Hierarchy.CannotAddSelfAsAParent();
+            return AppErrors.Hierarchy.CannotAddSelfAsAParent();
 
         if (parent.Children.FirstOrDefault(c => c.Id == this.Id) == null)
-            return Errors.Hierarchy.ParentHasNoSuchChild(parent.Id.ToString());
+            return AppErrors.Hierarchy.ParentHasNoSuchChild(parent.Id.ToString());
     
         Parent = parent;
         ParentId = parent.Id;
@@ -89,10 +89,10 @@ public class Department
     public UnitResult<Error> AddChild(Department child)
     {
         if (child == this)
-            return Errors.Hierarchy.CannotAddSelfAsAChild();
+            return AppErrors.Hierarchy.CannotAddSelfAsAChild();
         
         if (child.IsAncestorOf(this))
-            return Errors.Hierarchy.CannotAddAncestor();
+            return AppErrors.Hierarchy.CannotAddAncestor();
         
         // todo: Подумать над проверкой
         // нужно ли проверять переданный Deparment
@@ -108,7 +108,7 @@ public class Department
         var childToRemove = _children.FirstOrDefault(x => x.Id == child.Id);
         if (childToRemove == null)
         {
-            return Errors.General.NotFound(child.Id.ToString());
+            return AppErrors.General.NotFound(child.Id.ToString());
         }
         _children.Remove(childToRemove);
         return UnitResult.Success<Error>();

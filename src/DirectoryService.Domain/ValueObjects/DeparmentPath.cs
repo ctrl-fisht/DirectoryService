@@ -17,7 +17,7 @@ public record DeparmentPath
     {
         if (!Regex.IsMatch(path, @"^(?=.*[A-Za-z])[A-Za-z.-]+$"))
         {
-            return Errors.Validation.BadFormat(nameof(path), "Latin letters, dots, hyphen");
+            return AppErrors.Validation.BadFormat(nameof(path), "Latin letters, dots, hyphen");
         }
 
         return new DeparmentPath(path.ToLower());

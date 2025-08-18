@@ -15,7 +15,7 @@ public record Timezone
     public static Result<Timezone, Error> Create(string timezone)
     {
         if (string.IsNullOrWhiteSpace(timezone))
-            return Errors.Validation.CannotBeEmpty(nameof(timezone));
+            return AppErrors.Validation.CannotBeEmpty(nameof(timezone));
 
         try
         {
@@ -23,11 +23,11 @@ public record Timezone
         }
         catch (TimeZoneNotFoundException)
         {
-            return Errors.Validation.BadFormat(nameof(timezone), "IANA timezone code");
+            return AppErrors.Validation.BadFormat(nameof(timezone), "IANA timezone code");
         }
         catch (InvalidTimeZoneException)
         {
-            return Errors.Validation.BadFormat(nameof(timezone), "IANA timezone code");
+            return AppErrors.Validation.BadFormat(nameof(timezone), "IANA timezone code");
         }
 
         return new Timezone(timezone);
