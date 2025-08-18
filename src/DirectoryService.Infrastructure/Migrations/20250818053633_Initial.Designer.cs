@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DirectoryService.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250817112744_Initial")]
+    [Migration("20250818053633_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -175,6 +175,10 @@ namespace DirectoryService.Infrastructure.Migrations
                                 .HasColumnType("text")
                                 .HasColumnName("address_country");
 
+                            b1.Property<int>("RoomNumber")
+                                .HasColumnType("integer")
+                                .HasColumnName("address_room");
+
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .HasColumnType("text")
@@ -211,6 +215,8 @@ namespace DirectoryService.Infrastructure.Migrations
                             t.HasCheckConstraint("CK_locations_address_city", "\"address_city\" ~ '^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9 .-]+$'");
 
                             t.HasCheckConstraint("CK_locations_address_country", "\"address_country\" ~ '^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9 .-]+$'");
+
+                            t.HasCheckConstraint("CK_locations_address_room", "\"address_room\" > 0");
 
                             t.HasCheckConstraint("CK_locations_address_street", "\"address_street\" ~ '^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9 .-]+$'");
 

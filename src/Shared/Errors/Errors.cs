@@ -28,7 +28,14 @@ public static partial class Errors
             return Error.Validation(
                 "param.bad.length",
                 $"Parameter '{name}' is too long. Max: '{max}' symbols");
-        } 
+        }
+
+        public static Error MustBeGreaterOrEqualThan(string name, int min)
+        {
+            return Error.Validation(
+                "param.too.small",
+                $"Parameter '{name}' must be greater than or equal to '{min}'");
+        }
     }
 
     public partial class General

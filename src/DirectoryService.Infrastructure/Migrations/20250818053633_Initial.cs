@@ -52,6 +52,7 @@ namespace DirectoryService.Infrastructure.Migrations
                     address_building = table.Column<string>(type: "text", nullable: false),
                     address_city = table.Column<string>(type: "text", nullable: false),
                     address_country = table.Column<string>(type: "text", nullable: false),
+                    address_room = table.Column<int>(type: "integer", nullable: false),
                     address_street = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     timezone = table.Column<string>(type: "text", nullable: false)
@@ -62,6 +63,7 @@ namespace DirectoryService.Infrastructure.Migrations
                     table.CheckConstraint("CK_locations_address_building", "\"address_building\" ~ '^[A-Za-zА-Яа-яЁё0-9 \\-]+$'");
                     table.CheckConstraint("CK_locations_address_city", "\"address_city\" ~ '^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9 .-]+$'");
                     table.CheckConstraint("CK_locations_address_country", "\"address_country\" ~ '^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9 .-]+$'");
+                    table.CheckConstraint("CK_locations_address_room", "\"address_room\" > 0");
                     table.CheckConstraint("CK_locations_address_street", "\"address_street\" ~ '^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9 .-]+$'");
                     table.CheckConstraint("CK_locations_name_format", "\"name\" ~ '^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9 .-]+$'");
                     table.CheckConstraint("CK_locations_name_length", "char_length(\"name\") >= 3 AND char_length(\"name\") <= 120");

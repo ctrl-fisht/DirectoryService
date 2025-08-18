@@ -1,4 +1,6 @@
-﻿using DirectoryService.Infrastructure.EfCore;
+﻿using DirectoryService.Application.Repositories;
+using DirectoryService.Infrastructure.EfCore;
+using DirectoryService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,9 @@ public static class DependencyInjection
             options.UseNpgsql(connString);
         });
 
+        
+        services.AddScoped<ILocationRepository, LocationRepository>();
+        
         return services;
     }
 }
