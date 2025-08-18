@@ -1,5 +1,6 @@
 ﻿using DirectoryService.Application.Locations.Create;
 using DirectoryService.Contracts.Locations.Create;
+using DirectoryService.Presentation.Envelope;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DirectoryService.Presentation.Controllers;
@@ -8,7 +9,7 @@ namespace DirectoryService.Presentation.Controllers;
 public class LocationsController : ApplicationController
 {
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(
+    public async Task<EndpointResult<Guid>> Create(
         [FromBody] CreateLocationRequest request,
         [FromServices] CreateLocationHandler handler,
         CancellationToken cancellationToken = default)
@@ -23,9 +24,6 @@ public class LocationsController : ApplicationController
         var result = await handler.HandleAsync(command, cancellationToken);
         
         // В будущем добавить envelope
-        if (result.IsFailure)
-            return BadRequest(result.Error);
-        
-        return Ok(result.Value);
+        return result;
     }
 }

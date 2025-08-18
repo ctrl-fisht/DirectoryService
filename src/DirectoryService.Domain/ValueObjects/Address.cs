@@ -30,34 +30,34 @@ public record Address
         int roomNumber)
     {
         if (string.IsNullOrWhiteSpace(country))
-            return Errors.Validation.CannotBeEmpty(nameof(country));
+            return AppErrors.Validation.CannotBeEmpty(nameof(country));
 
         if (string.IsNullOrWhiteSpace(city))
-            return Errors.Validation.CannotBeEmpty(nameof(city));
+            return AppErrors.Validation.CannotBeEmpty(nameof(city));
 
         if (string.IsNullOrWhiteSpace(street))
-            return Errors.Validation.CannotBeEmpty(nameof(street));
+            return AppErrors.Validation.CannotBeEmpty(nameof(street));
 
         if (string.IsNullOrWhiteSpace(building))
-            return Errors.Validation.CannotBeEmpty(nameof(building));
+            return AppErrors.Validation.CannotBeEmpty(nameof(building));
         
         // Можно добавить регулярки, если нужны ограничения на символы
         var nameRegex = @"^(?=.*[A-Za-zА-Яа-яЁё0-9])[A-Za-zА-Яа-яЁё0-9\s.\-]+$";
 
         if (!Regex.IsMatch(country, nameRegex))
-            return Errors.Validation.BadFormat(nameof(country), "Cyrillic, Latin, digits, spaces, hyphen, dots");
+            return AppErrors.Validation.BadFormat(nameof(country), "Cyrillic, Latin, digits, spaces, hyphen, dots");
 
         if (!Regex.IsMatch(city, nameRegex))
-            return Errors.Validation.BadFormat(nameof(city), "Cyrillic, Latin, digits, spaces, hyphen, dots");
+            return AppErrors.Validation.BadFormat(nameof(city), "Cyrillic, Latin, digits, spaces, hyphen, dots");
 
         if (!Regex.IsMatch(street, nameRegex))
-            return Errors.Validation.BadFormat(nameof(street), "Cyrillic, Latin, digits, spaces, hyphen, dots");
+            return AppErrors.Validation.BadFormat(nameof(street), "Cyrillic, Latin, digits, spaces, hyphen, dots");
 
         if (!Regex.IsMatch(building, @"^[A-Za-zА-Яа-яЁё0-9\s\-]+$"))
-            return Errors.Validation.BadFormat(nameof(building), "Cyrillic, Latin, digits, spaces, hyphen");
+            return AppErrors.Validation.BadFormat(nameof(building), "Cyrillic, Latin, digits, spaces, hyphen");
         
         if (roomNumber < 1)
-            return Errors.Validation.MustBeGreaterOrEqualThan(nameof(roomNumber), 1);
+            return AppErrors.Validation.MustBeGreaterOrEqualThan(nameof(roomNumber), 1);
         
         
         return Result.Success<Address, Error>(new Address(country, city, street, building, roomNumber));

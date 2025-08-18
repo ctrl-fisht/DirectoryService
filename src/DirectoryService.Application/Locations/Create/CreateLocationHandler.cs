@@ -14,14 +14,14 @@ public class CreateLocationHandler
     {
         _repository = repository;
     }
-    public async Task<Result<Guid, Error>> HandleAsync(CreateLocationCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid, Errors>> HandleAsync(CreateLocationCommand command, CancellationToken cancellationToken)
     {
         // в будущем добавить FluentValidation   
-
+        
         
         var timezoneCreateResult = Timezone.Create(command.Timezone);
         if (timezoneCreateResult.IsFailure)
-            return timezoneCreateResult.Error;
+            return timezoneCreateResult.Error.ToErrors();
         
         var addressCreateResult = Address.Create(
             command.Address.Country,
@@ -31,11 +31,11 @@ public class CreateLocationHandler
             command.Address.RoomNumber);
         
         if (addressCreateResult.IsFailure)
-            return addressCreateResult.Error;
+            return addressCreateResult.Error.ToErrors();
 
         var nameCreateResult = LocationName.Create(command.Name);
         if (nameCreateResult.IsFailure)
-            return nameCreateResult.Error;
+            return nameCreateResult.Error.ToErrors();
         
         
         var locationCreateResult = Location.Create(
@@ -44,7 +44,7 @@ public class CreateLocationHandler
             timezoneCreateResult.Value);
         
         if (locationCreateResult.IsFailure)
-            return locationCreateResult.Error;
+            return locationCreateResult.Error.ToErrors();
         
         var result = await _repository.CreateAsync(locationCreateResult.Value, cancellationToken);
 

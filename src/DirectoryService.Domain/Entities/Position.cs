@@ -46,18 +46,18 @@ public class Position
         var id = Guid.NewGuid();
 
         if (string.IsNullOrWhiteSpace(name))
-            return Errors.Validation.CannotBeEmpty(nameof(name));
+            return AppErrors.Validation.CannotBeEmpty(nameof(name));
         
         if (name.Length > Constants.PositionConstants.NameMaxLength 
             || name.Length < Constants.PositionConstants.NameMinLength)
-            return Errors.Validation.LengthNotInRange(
+            return AppErrors.Validation.LengthNotInRange(
                 nameof(name),
                 Constants.PositionConstants.NameMinLength,
                 Constants.PositionConstants.NameMaxLength);
         
         if (!Regex.IsMatch(name, @"^[A-Za-zА-Яа-яЁё\s.-]+$"))
         {
-            return Errors.Validation.BadFormat(
+            return AppErrors.Validation.BadFormat(
                 nameof(name), 
                 "Cyrillic, Latin, spaces, hyphen, dots");
         }
@@ -65,7 +65,7 @@ public class Position
         if (!string.IsNullOrWhiteSpace(description) 
             && description.Length > Constants.PositionConstants.DescriptionMaxLength)
         {
-            return Errors.Validation.TooLong(nameof(name), Constants.PositionConstants.DescriptionMaxLength);
+            return AppErrors.Validation.TooLong(nameof(name), Constants.PositionConstants.DescriptionMaxLength);
         }
 
         return new Position(id, name, description);
