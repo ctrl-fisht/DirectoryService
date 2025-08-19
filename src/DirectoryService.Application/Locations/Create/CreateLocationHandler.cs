@@ -2,6 +2,7 @@
 using DirectoryService.Application.Repositories;
 using DirectoryService.Domain.Entities;
 using DirectoryService.Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 using Shared.Errors;
 
 namespace DirectoryService.Application.Locations.Create;
@@ -9,10 +10,12 @@ namespace DirectoryService.Application.Locations.Create;
 public class CreateLocationHandler
 {
     private readonly ILocationRepository _repository;
+    private readonly ILogger<CreateLocationHandler> _logger;
 
-    public CreateLocationHandler(ILocationRepository repository)
+    public CreateLocationHandler(ILocationRepository repository, ILogger<CreateLocationHandler> logger)
     {
         _repository = repository;
+        _logger = logger;
     }
     public async Task<Result<Guid, Errors>> HandleAsync(CreateLocationCommand command, CancellationToken cancellationToken)
     {
@@ -48,6 +51,11 @@ public class CreateLocationHandler
         
         var result = await _repository.CreateAsync(locationCreateResult.Value, cancellationToken);
 
+        _logger.LogInformation(
+            "Location {LocationName} was created, id={LocationId}",
+            locationCreateResult.Value.LocationName,
+            locationCreateResult.Value.Id);
+        
         return result;
     }
 }

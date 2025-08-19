@@ -1,8 +1,14 @@
 using DirectoryService.Application;
 using DirectoryService.Infrastructure;
+using DirectoryService.Presentation.Middleware;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((context, loggerConfig) =>
+{
+    loggerConfig.ReadFrom.Configuration(context.Configuration);
+});
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -12,6 +18,10 @@ builder.Services
     .AddApplication();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
+
+app.UseMiddleware<ExceptionsMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

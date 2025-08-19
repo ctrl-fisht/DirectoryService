@@ -2,7 +2,7 @@
 using Shared.Errors;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
-namespace DirectoryService.Presentation.Envelope;
+namespace DirectoryService.Presentation.Results;
 
 public class EndpointResult<TValue> : IResult
 {
