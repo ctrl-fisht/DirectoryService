@@ -1,6 +1,6 @@
 ﻿using Shared.Errors;
 
-namespace DirectoryService.Presentation.Envelope;
+namespace DirectoryService.Presentation.Results;
 
 public class FailureResult : IResult
 {

@@ -1,6 +1,6 @@
 ﻿using DirectoryService.Application.Locations.Create;
 using DirectoryService.Contracts.Locations.Create;
-using DirectoryService.Presentation.Envelope;
+using DirectoryService.Presentation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DirectoryService.Presentation.Controllers;

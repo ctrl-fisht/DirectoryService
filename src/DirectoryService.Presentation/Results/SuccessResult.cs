@@ -1,4 +1,4 @@
-﻿namespace DirectoryService.Presentation.Envelope;
+﻿namespace DirectoryService.Presentation.Results;
 
 public class SuccessResult<TValue> : IResult
 {

@@ -44,6 +44,11 @@ public static partial class AppErrors
         {
             return Error.Validation("record.not.found", $"Record with given id='{id}' was not found");
         }
+
+        public static Error SomethingWentWrong()
+        {
+            return Error.Failure("something.went.wrong", "Something went wrong");
+        }
     }
 
     public partial class Hierarchy

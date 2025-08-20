@@ -95,7 +95,7 @@ public class DepartmentsConfiguration : IEntityTypeConfiguration<Department>
         builder.HasOne(d => d.Parent)
             .WithMany(p => p.Children)
             .HasForeignKey(d => d.ParentId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
         
         // one-to-many часть связи Many-To-Many с locations
         builder.HasMany(d => d.DepartmentLocations)
