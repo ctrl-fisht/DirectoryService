@@ -6,35 +6,42 @@ public static partial class AppErrors
     {
         public static Error CannotBeEmpty(string name)
         {
-            return Error.Validation("param.is.empty", $"Parameter '{name}' cannot be empty");
+            return Error.Validation(
+                "param.is.empty",
+                $"Parameter '{name}' cannot be empty",
+                $"{name}");
         }
 
         public static Error LengthNotInRange(string name, int min, int max)
         {
             return Error.Validation(
                 "param.bad.length",
-                $"Parameter '{name}' length must be between {min} and {max}");
+                $"Parameter '{name}' length must be between {min} and {max}",
+                $"{name}");
         }
 
         public static Error BadFormat(string name, string allowed)
         {
             return Error.Validation(
                 "param.bad.format",
-                $"Parameter '{name}' has invalid format. Allowed: '{allowed}'");
+                $"Parameter '{name}' has invalid format. Allowed: '{allowed}'",
+                $"{name}");
         }
 
         public static Error TooLong(string name, int max)
         {
             return Error.Validation(
                 "param.bad.length",
-                $"Parameter '{name}' is too long. Max: '{max}' symbols");
+                $"Parameter '{name}' is too long. Max: '{max}' symbols",
+                $"{name}");
         }
 
         public static Error MustBeGreaterOrEqualThan(string name, int min)
         {
             return Error.Validation(
                 "param.too.small",
-                $"Parameter '{name}' must be greater than or equal to '{min}'");
+                $"Parameter '{name}' must be greater than or equal to '{min}'",
+                $"{name}");
         }
     }
 
@@ -44,6 +51,12 @@ public static partial class AppErrors
         {
             return Error.Validation("record.not.found", $"Record with given id='{id}' was not found");
         }
+
+        public static Error AlreadyExists(string fieldName)
+        {
+            return Error.Conflict("record.already_exists", $"Record with given '{fieldName}' already exists");
+        }
+        
 
         public static Error SomethingWentWrong()
         {

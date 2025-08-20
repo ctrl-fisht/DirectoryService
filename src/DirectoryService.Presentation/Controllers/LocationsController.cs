@@ -16,9 +16,7 @@ public class LocationsController : ApplicationController
     {
         var command = new CreateLocationCommand()
         {
-            Name = request.Name,
-            Timezone = request.Timezone,
-            Address = request.Address
+            Request = request
         };
         
         var result = await handler.HandleAsync(command, cancellationToken);
