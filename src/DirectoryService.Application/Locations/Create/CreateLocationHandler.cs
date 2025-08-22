@@ -1,7 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
+using DirectoryService.Application.Extensions;
 using DirectoryService.Application.Repositories;
 using DirectoryService.Domain.Entities;
 using DirectoryService.Domain.ValueObjects;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared.Errors;
 
@@ -10,37 +12,51 @@ namespace DirectoryService.Application.Locations.Create;
 public class CreateLocationHandler
 {
     private readonly ILocationRepository _repository;
+    private readonly IValidator<CreateLocationCommand> _validator;
     private readonly ILogger<CreateLocationHandler> _logger;
 
-    public CreateLocationHandler(ILocationRepository repository, ILogger<CreateLocationHandler> logger)
+    public CreateLocationHandler(ILocationRepository repository, IValidator<CreateLocationCommand> validator, ILogger<CreateLocationHandler> logger)
     {
         _repository = repository;
+        _validator = validator;
         _logger = logger;
     }
     public async Task<Result<Guid, Errors>> HandleAsync(CreateLocationCommand command, CancellationToken cancellationToken)
     {
-        // в будущем добавить FluentValidation   
+        // валидация команды 
+        var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.Errors.ToAppErrors();
         
-        
-        var timezoneCreateResult = Timezone.Create(command.Timezone);
-        if (timezoneCreateResult.IsFailure)
-            return timezoneCreateResult.Error.ToErrors();
+        // создание доменных объектов
+        var timezoneCreateResult = Timezone.Create(command.Request.Timezone);
         
         var addressCreateResult = Address.Create(
-            command.Address.Country,
-            command.Address.City,
-            command.Address.Street,
-            command.Address.Building,
-            command.Address.RoomNumber);
+            command.Request.Address.Country,
+            command.Request.Address.City,
+            command.Request.Address.Street,
+            command.Request.Address.Building,
+            command.Request.Address.RoomNumber);
         
-        if (addressCreateResult.IsFailure)
-            return addressCreateResult.Error.ToErrors();
 
-        var nameCreateResult = LocationName.Create(command.Name);
-        if (nameCreateResult.IsFailure)
-            return nameCreateResult.Error.ToErrors();
+        var nameCreateResult = LocationName.Create(command.Request.Name);
         
         
+        // бизнес валидация
+        // Проверка на уникальность имени
+        var nameExists = await _repository.ExistsByNameAsync(nameCreateResult.Value, cancellationToken);
+        if (nameExists)
+            return AppErrors.General.AlreadyExists("name").ToErrors();
+        
+        // Проверка на уникальность адреса
+        var addressExists = await _repository.ExistsByAddressAsync(addressCreateResult.Value, cancellationToken);
+        if (addressExists)
+            return AppErrors.General.AlreadyExists("address").ToErrors();
+        
+        
+        
+        // Создание и сохранение в БД
         var locationCreateResult = Location.Create(
             nameCreateResult.Value,
             addressCreateResult.Value,
