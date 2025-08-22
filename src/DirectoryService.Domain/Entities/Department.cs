@@ -60,6 +60,12 @@ public class Department
         _departmentPositions.Remove(departmentPosition);
         return UnitResult.Success<Error>();
     }
+
+    public UnitResult<Error> AddDepartmentLocations(List<DepartmentLocation> departmentLocations)
+    {
+        _departmentLocations.AddRange(departmentLocations);
+        return UnitResult.Success<Error>();
+    }
     
     public UnitResult<Error> AddDepartmentLocation(DepartmentLocation departmentLocation)
     {
@@ -126,8 +132,11 @@ public class Department
         }
         return false;
     }
-    
-    public static Result<Department, Error> Create(DepartmentName departmentName, Identifier identifier, Department? parent)
+
+    public static Result<Department, Error> Create(
+        DepartmentName departmentName,
+        Identifier identifier,
+        Department? parent)
     {
         var id = Guid.NewGuid();
 
@@ -137,15 +146,15 @@ public class Department
             path = parent.Path.Value + "." + identifier.Value;
 
         var pathCreateResult = DeparmentPath.Create(path);
-        if  (!pathCreateResult.IsSuccess)
+        if (!pathCreateResult.IsSuccess)
             return pathCreateResult.Error;
-        
-        
+
+
         // depth calculating
-        int depth = 1;
+        int depth = 0;
         if (parent != null)
             depth = parent.Depth + 1;
-            
+
         return new Department(id, departmentName, identifier, parent, pathCreateResult.Value, depth);
     }
 }

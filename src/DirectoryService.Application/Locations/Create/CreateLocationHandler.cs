@@ -66,12 +66,14 @@ public class CreateLocationHandler
             return locationCreateResult.Error.ToErrors();
         
         var result = await _repository.CreateAsync(locationCreateResult.Value, cancellationToken);
-
+        if (result.IsFailure)
+            return result.Error.ToErrors();
+        
         _logger.LogInformation(
             "Location {LocationName} was created, id={LocationId}",
             locationCreateResult.Value.LocationName,
             locationCreateResult.Value.Id);
         
-        return result;
+        return result.Value;
     }
 }
