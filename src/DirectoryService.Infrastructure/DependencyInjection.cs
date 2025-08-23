@@ -19,7 +19,9 @@ public static class DependencyInjection
         });
 
         
-        services.AddScoped<ILocationRepository, LocationRepository>();
+        services.AddScoped<ILocationRepository, LocationsRepository>();
+        services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
+        services.AddScoped<IPositionsRepository, PositionsRepository>();
         
         return services;
     }
