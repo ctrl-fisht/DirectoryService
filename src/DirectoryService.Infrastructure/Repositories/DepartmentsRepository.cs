@@ -8,12 +8,12 @@ using Shared.Errors;
 
 namespace DirectoryService.Infrastructure.Repositories;
 
-public class DepartmentRepository : IDepartmentRepository
+public class DepartmentsRepository : IDepartmentsRepository
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<DepartmentRepository> _logger;
+    private readonly ILogger<DepartmentsRepository> _logger;
     
-    public DepartmentRepository(AppDbContext dbContext, ILogger<DepartmentRepository> logger)
+    public DepartmentsRepository(AppDbContext dbContext, ILogger<DepartmentsRepository> logger)
     {
         _dbContext = dbContext;
         _logger = logger;
@@ -45,5 +45,15 @@ public class DepartmentRepository : IDepartmentRepository
     public async Task<bool> IsIdentifierExistAsync(string identifier, CancellationToken cancellationToken)
     {
         return  await _dbContext.Departments.AnyAsync(d => d.Identifier.Value == identifier);
+    }
+
+    public async Task<bool> AllExistsAsync(List<Guid> ids, CancellationToken cancellationToken)
+    {
+        var count = await _dbContext.Departments
+            .Where(d => ids.Contains(d.Id))
+            .Where(d => d.IsActive)
+            .CountAsync(cancellationToken);
+        
+        return count == ids.Count;
     }
 }

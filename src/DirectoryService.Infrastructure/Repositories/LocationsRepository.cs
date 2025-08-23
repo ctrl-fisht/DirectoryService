@@ -29,7 +29,7 @@ public class LocationsRepository : ILocationRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while adding location");
+            _logger.LogError(ex, "Error while creating location");
             return AppErrors.Database.ErrorWhileAdding("location");
         }
     }
@@ -48,6 +48,7 @@ public class LocationsRepository : ILocationRepository
     {
         var count = await _dbContext.Locations
             .Where(l => locations.Contains(l.Id))
+            .Where(l => l.IsActive)
             .CountAsync(cancellationToken);
         
         return count == locations.Count;

@@ -12,18 +12,18 @@ namespace DirectoryService.Application.Departments.Create;
 public class CreateDepartmentHandler
 {
     private readonly CreateDepartmentValidator _validator;
-    private readonly IDepartmentRepository _departmentsRepository;
+    private readonly IDepartmentsRepository _departmentsesRepository;
     private readonly ILocationRepository _locationsRepository;
     private readonly ILogger<CreateDepartmentHandler> _logger;
     
     public CreateDepartmentHandler(
         CreateDepartmentValidator validator,
-        IDepartmentRepository departmentsRepository,
+        IDepartmentsRepository departmentsesRepository,
         ILocationRepository locationsRepository,
         ILogger<CreateDepartmentHandler> logger)
     {
         _validator = validator;
-        _departmentsRepository = departmentsRepository;
+        _departmentsesRepository = departmentsesRepository;
         _locationsRepository = locationsRepository;
         _logger = logger;
     }
@@ -47,7 +47,7 @@ public class CreateDepartmentHandler
 
         // Проверка: идентификатор уникальный?
         var isIdentifierExist = 
-            await _departmentsRepository.IsIdentifierExistAsync(command.Request.Identifier, cancellationToken);
+            await _departmentsesRepository.IsIdentifierExistAsync(command.Request.Identifier, cancellationToken);
         
         if (isIdentifierExist)
             return AppErrors.General.AlreadyExists("identifier").ToErrors();
@@ -66,7 +66,7 @@ public class CreateDepartmentHandler
             createDepartmentResult = Department.Create(departmentName, identifier, null);
         else
         {
-            var parent = await _departmentsRepository.GetAsync(parentId.Value, cancellationToken);
+            var parent = await _departmentsesRepository.GetAsync(parentId.Value, cancellationToken);
 
             if (parent.IsFailure)
                 return parent.Error.ToErrors();
@@ -92,10 +92,16 @@ public class CreateDepartmentHandler
             return addLocationsResult.Error.ToErrors();
         
         // Сохраняем Department
-        var saveResult = await _departmentsRepository.AddAsync(department, cancellationToken);
+        var saveResult = await _departmentsesRepository.AddAsync(department, cancellationToken);
         if (saveResult.IsFailure)
             return saveResult.Error.ToErrors();
-
+        
+        _logger.LogInformation(
+            "Department {DepartmentName} was created, id={Id}, identifier={Identifier}",
+            department.DepartmentName.Value,
+            department.Id,
+            department.Identifier.Value);
+        
         return saveResult.Value;
     }
 }
