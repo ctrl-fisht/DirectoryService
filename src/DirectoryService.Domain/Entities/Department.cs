@@ -66,6 +66,13 @@ public class Department
         _departmentLocations.AddRange(departmentLocations);
         return UnitResult.Success<Error>();
     }
+
+    public UnitResult<Error> UpdateDepartmentLocations(List<DepartmentLocation> departmentLocations)
+    {
+        _departmentLocations.Clear();
+        _departmentLocations.AddRange(departmentLocations);
+        return UnitResult.Success<Error>();
+    }
     
     public UnitResult<Error> AddDepartmentLocation(DepartmentLocation departmentLocation)
     {

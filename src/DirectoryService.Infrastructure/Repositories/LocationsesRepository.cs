@@ -9,11 +9,11 @@ using Shared.Errors;
 
 namespace DirectoryService.Infrastructure.Repositories;
 
-public class LocationsRepository : ILocationRepository
+public class LocationsesRepository : ILocationsRepository
 {
     private readonly AppDbContext _dbContext;
-    private readonly ILogger<LocationsRepository> _logger;
-    public LocationsRepository(AppDbContext dbContext, ILogger<LocationsRepository> logger)
+    private readonly ILogger<LocationsesRepository> _logger;
+    public LocationsesRepository(AppDbContext dbContext, ILogger<LocationsesRepository> logger)
     {
         _dbContext = dbContext;
         _logger = logger;

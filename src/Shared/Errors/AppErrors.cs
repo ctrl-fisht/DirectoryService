@@ -83,6 +83,18 @@ public static partial class AppErrors
         {
             return Error.Failure("database.error", $"Error while adding '{record}'");
         }
+        
+        public static Error ErrorWhileSavingChanges()
+        {
+            return Error.Failure("database.error", $"Error while saving changes");
+        }
+
+        public static Error SomeRecordsNotFound(int expected, int found)
+        {
+            return Error.NotFound(
+                "record.not.found",
+                $"Some records were not found expected: {expected}, found: {found}");
+        }
     }
 
     public partial class Hierarchy

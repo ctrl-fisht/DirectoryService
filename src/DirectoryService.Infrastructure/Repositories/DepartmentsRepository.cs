@@ -36,7 +36,11 @@ public class DepartmentsRepository : IDepartmentsRepository
 
     public async Task<Result<Department, Error>> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _dbContext.Departments.FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
+        // предполагаю что Department почти всегда будет использоваться с locations и positions
+        var result = await _dbContext.Departments
+            .Include(d => d.DepartmentLocations)
+            .Include(d => d.DepartmentPositions)
+            .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
         if (result == null)
             return AppErrors.General.NotFound(id.ToString());
         return result;
@@ -55,5 +59,19 @@ public class DepartmentsRepository : IDepartmentsRepository
             .CountAsync(cancellationToken);
         
         return count == ids.Count;
+    }
+
+    public async Task<UnitResult<Error>> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            return UnitResult.Success<Error>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while saving department changes");
+            return AppErrors.Database.ErrorWhileSavingChanges();
+        }
     }
 }

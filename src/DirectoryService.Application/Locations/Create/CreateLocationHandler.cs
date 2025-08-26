@@ -11,11 +11,11 @@ namespace DirectoryService.Application.Locations.Create;
 
 public class CreateLocationHandler
 {
-    private readonly ILocationRepository _repository;
+    private readonly ILocationsRepository _repository;
     private readonly IValidator<CreateLocationCommand> _validator;
     private readonly ILogger<CreateLocationHandler> _logger;
 
-    public CreateLocationHandler(ILocationRepository repository, IValidator<CreateLocationCommand> validator, ILogger<CreateLocationHandler> logger)
+    public CreateLocationHandler(ILocationsRepository repository, IValidator<CreateLocationCommand> validator, ILogger<CreateLocationHandler> logger)
     {
         _repository = repository;
         _validator = validator;
