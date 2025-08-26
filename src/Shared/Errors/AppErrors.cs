@@ -43,6 +43,14 @@ public static partial class AppErrors
                 $"Parameter '{name}' must be greater than or equal to '{min}'",
                 $"{name}");
         }
+
+        public static Error DuplicatesInList(string name)
+        {
+            return Error.Validation(
+                "param.duplicate",
+                $"List {name} has duplicates",
+                $"{name}");
+        }
     }
 
     public partial class General
@@ -50,6 +58,11 @@ public static partial class AppErrors
         public static Error NotFound(string id)
         {
             return Error.Validation("record.not.found", $"Record with given id='{id}' was not found");
+        }
+
+        public static Error GivenIdsNotExists(string field)
+        {
+            return Error.Validation("record.not.found", $"Some records in field '{field} are not exist'");
         }
 
         public static Error AlreadyExists(string fieldName)
@@ -61,6 +74,14 @@ public static partial class AppErrors
         public static Error SomethingWentWrong()
         {
             return Error.Failure("something.went.wrong", "Something went wrong");
+        }
+    }
+
+    public static partial class Database
+    {
+        public static Error ErrorWhileAdding(string record)
+        {
+            return Error.Failure("database.error", $"Error while adding '{record}'");
         }
     }
 
