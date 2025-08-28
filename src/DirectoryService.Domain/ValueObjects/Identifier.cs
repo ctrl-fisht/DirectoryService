@@ -34,4 +34,9 @@ public record Identifier
 
         return new Identifier(identifier.ToLower());
     }
+
+    public static Identifier CreateFromDb(string identifier)
+    {
+        return new Identifier(identifier);
+    }
 }

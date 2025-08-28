@@ -21,6 +21,7 @@ namespace DirectoryService.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "ltree");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("DirectoryService.Domain.Entities.Department", b =>
@@ -45,6 +46,11 @@ namespace DirectoryService.Infrastructure.Migrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid")
                         .HasColumnName("parent_id");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("ltree")
+                        .HasColumnName("path");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -72,16 +78,6 @@ namespace DirectoryService.Infrastructure.Migrations
                                 .HasColumnName("identifier");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Path", "DirectoryService.Domain.Entities.Department.Path#DeparmentPath", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("path");
-                        });
-
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
@@ -95,8 +91,6 @@ namespace DirectoryService.Infrastructure.Migrations
                             t.HasCheckConstraint("CK_departments_name_cyrillic", "\"name\" ~ '^[А-Яа-яЁё -]+$'");
 
                             t.HasCheckConstraint("CK_departments_name_length", "char_length(\"name\") >= 3 AND char_length(\"name\") <= 150");
-
-                            t.HasCheckConstraint("CK_departments_path", "\"path\" ~ '^(?=.*[A-Za-z])[A-Za-z.-]+$'");
                         });
                 });
 

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Shared.Errors;
 
-namespace DirectoryService.Application.Locations.UpdateLocations;
+namespace DirectoryService.Application.Departments.UpdateLocations;
 
 public class UpdateDepartmentLocationsValidator : AbstractValidator<UpdateDepartmentLocationsCommand>
 {

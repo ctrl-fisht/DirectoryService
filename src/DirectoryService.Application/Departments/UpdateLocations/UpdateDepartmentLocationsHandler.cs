@@ -6,7 +6,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared.Errors;
 
-namespace DirectoryService.Application.Locations.UpdateLocations;
+namespace DirectoryService.Application.Departments.UpdateLocations;
 
 public class UpdateDepartmentLocationsHandler
 {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DirectoryService.Infrastructure.EfCore.Configurations;
 
-public class DepartmentLocations : IEntityTypeConfiguration<DepartmentLocation>
+public class DepartmentLocationsConfiguration : IEntityTypeConfiguration<DepartmentLocation>
 {
     public void Configure(EntityTypeBuilder<DepartmentLocation> builder)
     {

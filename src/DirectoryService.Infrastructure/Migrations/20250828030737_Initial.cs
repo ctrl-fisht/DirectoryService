@@ -11,19 +11,22 @@ namespace DirectoryService.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:ltree", ",,");
+
             migrationBuilder.CreateTable(
                 name: "departments",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     parent_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    path = table.Column<string>(type: "ltree", nullable: false),
                     depth = table.Column<int>(type: "integer", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    identifier = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    path = table.Column<string>(type: "text", nullable: false)
+                    identifier = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,13 +35,12 @@ namespace DirectoryService.Infrastructure.Migrations
                     table.CheckConstraint("CK_departments_identifier_length", "char_length(\"identifier\") >= 3 AND char_length(\"identifier\") <= 150");
                     table.CheckConstraint("CK_departments_name_cyrillic", "\"name\" ~ '^[А-Яа-яЁё -]+$'");
                     table.CheckConstraint("CK_departments_name_length", "char_length(\"name\") >= 3 AND char_length(\"name\") <= 150");
-                    table.CheckConstraint("CK_departments_path", "\"path\" ~ '^(?=.*[A-Za-z])[A-Za-z.-]+$'");
                     table.ForeignKey(
                         name: "FK_departments_departments_parent_id",
                         column: x => x.parent_id,
                         principalTable: "departments",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,7 +77,7 @@ namespace DirectoryService.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

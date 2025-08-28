@@ -1,5 +1,6 @@
 ﻿using DirectoryService.Domain;
 using DirectoryService.Domain.Entities;
+using DirectoryService.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,11 +32,6 @@ public class DepartmentsConfiguration : IEntityTypeConfiguration<Department>
                 "CK_departments_identifier_length",
                 $"char_length(\"identifier\") >= {Constants.DepartmentConstants.IdentifierMinLength} " +
                 $"AND char_length(\"identifier\") <= {Constants.DepartmentConstants.IdentifierMaxLength}");
-            
-            
-            tb.HasCheckConstraint(
-                "CK_departments_path",
-                "\"path\" ~ '^(?=.*[A-Za-z])[A-Za-z.-]+$'");
         });
         
         builder.HasKey(d => d.Id);
@@ -44,30 +40,30 @@ public class DepartmentsConfiguration : IEntityTypeConfiguration<Department>
         
         
         // properties configuration
-        
-        builder.ComplexProperty(d => d.DepartmentName, dnb =>
-        {
-            dnb.Property(name => name.Value)
-                .HasColumnName("name")
-                .IsRequired()
-                .HasMaxLength(Constants.DepartmentConstants.NameMaxLength);
 
-        });
+        builder.Property(d => d.DepartmentName)
+            .HasColumnName("name")
+            .IsRequired()
+            .HasMaxLength(Constants.DepartmentConstants.NameMaxLength)
+            .HasConversion(
+                value => value.Value,
+                value => DepartmentName.CreateFromDb(value));
+       
+        builder.Property(d => d.Identifier)
+            .HasColumnName("identifier")
+            .IsRequired()
+            .HasMaxLength(Constants.DepartmentConstants.IdentifierMaxLength)
+            .HasConversion(
+                value => value.Value,
+                value => Identifier.CreateFromDb(value));
 
-        builder.ComplexProperty(d => d.Identifier, dib =>
-        {
-            dib.Property(identifier => identifier.Value)
-                .HasColumnName("identifier")
-                .IsRequired()
-                .HasMaxLength(Constants.DepartmentConstants.IdentifierMaxLength);
-        });
-
-        builder.ComplexProperty(d => d.Path, dpb =>
-        {
-            dpb.Property(p => p.Value)
-                .HasColumnName("path")
-                .IsRequired();
-        });
+        builder.Property(d => d.Path)
+            .HasColumnName("path")
+            .IsRequired()
+            .HasColumnType("ltree")
+            .HasConversion(
+                value => value.Value,
+                value => DepartmentPath.CreateFromDb(value));
 
         builder.Property(d => d.ParentId)
             .HasColumnName("parent_id");
