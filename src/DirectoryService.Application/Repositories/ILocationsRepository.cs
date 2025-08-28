@@ -5,7 +5,7 @@ using Shared.Errors;
 
 namespace DirectoryService.Application.Repositories;
 
-public interface ILocationRepository
+public interface ILocationsRepository
 {
     Task<Result<Guid, Error>> CreateAsync(Location location, CancellationToken cancellationToken);
     Task<bool> ExistsByNameAsync(LocationName locationName, CancellationToken cancellationToken);

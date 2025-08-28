@@ -19,7 +19,7 @@ public static class DependencyInjection
         });
 
         
-        services.AddScoped<ILocationRepository, LocationsRepository>();
+        services.AddScoped<ILocationsRepository, LocationsesRepository>();
         services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
         services.AddScoped<IPositionsRepository, PositionsRepository>();
         

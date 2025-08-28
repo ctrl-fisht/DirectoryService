@@ -13,18 +13,18 @@ public class CreateDepartmentHandler
 {
     private readonly CreateDepartmentValidator _validator;
     private readonly IDepartmentsRepository _departmentsesRepository;
-    private readonly ILocationRepository _locationsRepository;
+    private readonly ILocationsRepository _locationsesRepository;
     private readonly ILogger<CreateDepartmentHandler> _logger;
     
     public CreateDepartmentHandler(
         CreateDepartmentValidator validator,
         IDepartmentsRepository departmentsesRepository,
-        ILocationRepository locationsRepository,
+        ILocationsRepository locationsesRepository,
         ILogger<CreateDepartmentHandler> logger)
     {
         _validator = validator;
         _departmentsesRepository = departmentsesRepository;
-        _locationsRepository = locationsRepository;
+        _locationsesRepository = locationsesRepository;
         _logger = logger;
     }
 
@@ -39,7 +39,7 @@ public class CreateDepartmentHandler
             return validationResult.Errors.ToAppErrors();
 
         // Проверка: локации существуют?
-        var isLocationsExists = await _locationsRepository
+        var isLocationsExists = await _locationsesRepository
             .AllExistsAsync(command.Request.Locations, cancellationToken);
 
         if (!isLocationsExists)
