@@ -31,10 +31,10 @@ public class DepartmentsController : ApplicationController
     public async Task<EndpointResult<Guid>> UpdateDepartmentLocations(
         [FromRoute] Guid departmentId,
         [FromBody] UpdateDepartmentLocationsRequest request,
-        [FromServices] UpdateDepartmentLocationsHandler handler,
+        [FromServices] MoveDepartmentHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateDepartmentLocationsCommand()
+        var command = new MoveDepartmentCommand()
         {
             DepartmentId = departmentId,
             Request = request
@@ -44,7 +44,7 @@ public class DepartmentsController : ApplicationController
 
     [Route("{departmentId:Guid}/parent")]
     [HttpPut]
-    public async Task<EndpointResult<Guid>> UpdateDepartmentParent(
+    public async Task<EndpointResult<Guid>> MoveDepartmentParent(
         [FromRoute] Guid departmentId,
         [FromBody] UpdateDepartmentParentRequest request,
         [FromServices] UpdateDepartmentParentHandler handler,

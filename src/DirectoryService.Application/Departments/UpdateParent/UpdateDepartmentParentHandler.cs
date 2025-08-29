@@ -98,7 +98,7 @@ public class UpdateDepartmentParentHandler
         department.SetParent(parentDepartment);
         
         // Обновляем также path и depth у всех потомков этого department с помощью ltree
-        var updateResult = await _departmentsRepository.UpdateDepartmentParentAsync(department, oldPath, cancellationToken);
+        var updateResult = await _departmentsRepository.MoveDepartmentAsync(department, oldPath, cancellationToken);
         if (updateResult.IsFailure)
         {
             transaction.Rollback(cancellationToken);

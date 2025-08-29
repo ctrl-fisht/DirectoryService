@@ -18,7 +18,7 @@ public static class DependencyInjection
         services.AddScoped<CreateLocationHandler>();
         
         services.AddScoped<CreateDepartmentHandler>();
-        services.AddScoped<UpdateDepartmentLocationsHandler>();
+        services.AddScoped<MoveDepartmentHandler>();
         services.AddScoped<UpdateDepartmentParentHandler>();
         
         services.AddScoped<CreatePositionHandler>();

@@ -8,18 +8,18 @@ using Shared.Errors;
 
 namespace DirectoryService.Application.Departments.UpdateLocations;
 
-public class UpdateDepartmentLocationsHandler
+public class MoveDepartmentHandler
 {
     private readonly IDepartmentsRepository _departmentRepository;
     private readonly ILocationsRepository _locationsRepository;
-    private readonly IValidator<UpdateDepartmentLocationsCommand> _validator;
-    private readonly ILogger<UpdateDepartmentLocationsHandler> _logger;
+    private readonly IValidator<MoveDepartmentCommand> _validator;
+    private readonly ILogger<MoveDepartmentHandler> _logger;
     
-    public UpdateDepartmentLocationsHandler(
+    public MoveDepartmentHandler(
         IDepartmentsRepository departmentRepository,
         ILocationsRepository locationsRepository,
-        IValidator<UpdateDepartmentLocationsCommand> validator,
-        ILogger<UpdateDepartmentLocationsHandler> logger)
+        IValidator<MoveDepartmentCommand> validator,
+        ILogger<MoveDepartmentHandler> logger)
     {
         _departmentRepository = departmentRepository;
         _locationsRepository = locationsRepository;
@@ -28,7 +28,7 @@ public class UpdateDepartmentLocationsHandler
     }
     
     public async Task<Result<Guid, Errors>> HandleAsync(
-        UpdateDepartmentLocationsCommand command,
+        MoveDepartmentCommand command,
         CancellationToken cancellationToken)
     {
         var locationIds = command.Request.LocationIds.ToList(); 

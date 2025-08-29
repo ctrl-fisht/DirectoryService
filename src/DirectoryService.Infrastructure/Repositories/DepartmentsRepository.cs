@@ -117,7 +117,7 @@ public class DepartmentsRepository : IDepartmentsRepository
         return result.HasValue;
     }
 
-    public async Task<UnitResult<Error>> UpdateDepartmentParentAsync(
+    public async Task<UnitResult<Error>> MoveDepartmentAsync(
         Department departmentUpdated,
         DepartmentPath oldPath, CancellationToken cancellationToken)
     {

@@ -3,9 +3,9 @@ using Shared.Errors;
 
 namespace DirectoryService.Application.Departments.UpdateLocations;
 
-public class UpdateDepartmentLocationsValidator : AbstractValidator<UpdateDepartmentLocationsCommand>
+public class MoveDepartmentValidator : AbstractValidator<MoveDepartmentCommand>
 {
-    public UpdateDepartmentLocationsValidator()
+    public MoveDepartmentValidator()
     {
         RuleFor(c => c.DepartmentId)
             .NotEmpty().WithMessage(AppErrors.Validation.CannotBeEmpty("DepartmentId").Serialize());
