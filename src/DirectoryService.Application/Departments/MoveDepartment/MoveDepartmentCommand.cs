@@ -1,6 +1,6 @@
 ﻿using DirectoryService.Contracts.Departments.UpdateLocations;
 
-namespace DirectoryService.Application.Departments.UpdateLocations;
+namespace DirectoryService.Application.Departments.MoveDepartment;
 
 public record MoveDepartmentCommand
 {

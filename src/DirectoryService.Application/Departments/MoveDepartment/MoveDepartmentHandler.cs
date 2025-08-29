@@ -6,7 +6,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared.Errors;
 
-namespace DirectoryService.Application.Departments.UpdateLocations;
+namespace DirectoryService.Application.Departments.MoveDepartment;
 
 public class MoveDepartmentHandler
 {

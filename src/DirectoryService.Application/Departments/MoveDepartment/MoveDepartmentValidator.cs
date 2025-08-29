@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Shared.Errors;
 
-namespace DirectoryService.Application.Departments.UpdateLocations;
+namespace DirectoryService.Application.Departments.MoveDepartment;
 
 public class MoveDepartmentValidator : AbstractValidator<MoveDepartmentCommand>
 {

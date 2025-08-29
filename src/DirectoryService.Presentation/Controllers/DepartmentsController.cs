@@ -1,5 +1,5 @@
 ﻿using DirectoryService.Application.Departments.Create;
-using DirectoryService.Application.Departments.UpdateLocations;
+using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateParent;
 using DirectoryService.Contracts.Departments.Create;
 using DirectoryService.Contracts.Departments.UpdateLocations;
