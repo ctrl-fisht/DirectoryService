@@ -75,6 +75,11 @@ public static partial class AppErrors
         {
             return Error.Failure("something.went.wrong", "Something went wrong");
         }
+
+        public static Error ErrorWhile(string @while)
+        {
+            return Error.Failure("something.went.wrong", @while);
+        }
     }
 
     public static partial class Database
@@ -89,11 +94,19 @@ public static partial class AppErrors
             return Error.Failure("database.error", $"Error while saving changes");
         }
 
-        public static Error SomeRecordsNotFound(int expected, int found)
+        public static Error ErrorWhileBeginTransaction()
         {
-            return Error.NotFound(
-                "record.not.found",
-                $"Some records were not found expected: {expected}, found: {found}");
+            return Error.Failure("database.error", $"Error while begin transaction");
+        }
+
+        public static Error ErrorWhileCommitTransaction()
+        {
+            return Error.Failure("database.error", $"Error while commit transaction");
+        }
+
+        public static Error ErrorWhileRollbackTransaction()
+        {
+            return Error.Failure("database.error", $"Error while rollback transaction");
         }
     }
 
@@ -117,6 +130,11 @@ public static partial class AppErrors
         public static Error ParentHasNoSuchChild(string parentId)
         {
             return Error.Failure("parent.no.child", $"Given parent '{parentId}' has no such child");
+        }
+
+        public static Error CannotAddChildAsAncestor()
+        {
+            return Error.Failure("cannot.add.ancestor", "Cannot add child as ancestor");
         }
     }
 }

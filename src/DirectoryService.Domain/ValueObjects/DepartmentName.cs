@@ -33,4 +33,9 @@ public record DepartmentName
         
         return new DepartmentName(name);
     }
+
+    public static DepartmentName CreateFromDb(string name)
+    {
+        return new DepartmentName(name);
+    }
 }
