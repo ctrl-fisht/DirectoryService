@@ -67,7 +67,7 @@ public static partial class AppErrors
 
         public static Error AlreadyExists(string fieldName)
         {
-            return Error.Conflict("record.already_exists", $"Record with given '{fieldName}' already exists");
+            return Error.Conflict("record.already.exists", $"Record with given '{fieldName}' already exists");
         }
         
 

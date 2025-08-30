@@ -12,18 +12,18 @@ namespace DirectoryService.Application.Departments.Create;
 public class CreateDepartmentHandler
 {
     private readonly CreateDepartmentValidator _validator;
-    private readonly IDepartmentsRepository _departmentsesRepository;
+    private readonly IDepartmentsRepository _departmentsRepository;
     private readonly ILocationsRepository _locationsesRepository;
     private readonly ILogger<CreateDepartmentHandler> _logger;
     
     public CreateDepartmentHandler(
         CreateDepartmentValidator validator,
-        IDepartmentsRepository departmentsesRepository,
+        IDepartmentsRepository departmentsRepository,
         ILocationsRepository locationsesRepository,
         ILogger<CreateDepartmentHandler> logger)
     {
         _validator = validator;
-        _departmentsesRepository = departmentsesRepository;
+        _departmentsRepository = departmentsRepository;
         _locationsesRepository = locationsesRepository;
         _logger = logger;
     }
@@ -37,7 +37,11 @@ public class CreateDepartmentHandler
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.Errors.ToAppErrors();
-
+        
+        // Создание ValueObject
+        var departmentName = DepartmentName.Create(command.Request.Name).Value;
+        var identifier = Identifier.Create(command.Request.Identifier).Value;
+        
         // Проверка: локации существуют?
         var isLocationsExists = await _locationsesRepository
             .AllExistsAsync(command.Request.Locations, cancellationToken);
@@ -47,15 +51,10 @@ public class CreateDepartmentHandler
 
         // Проверка: идентификатор уникальный?
         var isIdentifierExist = 
-            await _departmentsesRepository.IsIdentifierExistAsync(command.Request.Identifier, cancellationToken);
+            await _departmentsRepository.IsIdentifierExistAsync(identifier, cancellationToken);
         
         if (isIdentifierExist)
             return AppErrors.General.AlreadyExists("identifier").ToErrors();
-        
-        
-        // Создание ValueObject
-        var departmentName = DepartmentName.Create(command.Request.Name).Value;
-        var identifier = Identifier.Create(command.Request.Identifier).Value;
         
         // Достаём родителя, если он есть, и создаем Department
         var parentId = command.Request.ParentId;
@@ -66,7 +65,7 @@ public class CreateDepartmentHandler
             createDepartmentResult = Department.Create(departmentName, identifier, null);
         else
         {
-            var parent = await _departmentsesRepository.GetAsync(parentId.Value, cancellationToken);
+            var parent = await _departmentsRepository.GetAsync(parentId.Value, cancellationToken);
 
             if (parent.IsFailure)
                 return parent.Error.ToErrors();
@@ -92,7 +91,7 @@ public class CreateDepartmentHandler
             return addLocationsResult.Error.ToErrors();
         
         // Сохраняем Department
-        var saveResult = await _departmentsesRepository.AddAsync(department, cancellationToken);
+        var saveResult = await _departmentsRepository.AddAsync(department, cancellationToken);
         if (saveResult.IsFailure)
             return saveResult.Error.ToErrors();
         
