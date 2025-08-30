@@ -7,12 +7,11 @@ public class MoveDepartmentValidator : AbstractValidator<MoveDepartmentCommand>
 {
     public MoveDepartmentValidator()
     {
-        RuleFor(c => c.DepartmentId)
-            .NotEmpty().WithMessage(AppErrors.Validation.CannotBeEmpty("DepartmentId").Serialize());
+        RuleFor(command => command.DepartmentId).NotEmpty()
+            .WithMessage(AppErrors.Validation.CannotBeEmpty("departmentId").Serialize());
         
-        RuleFor(c => c.Request.LocationIds.ToList())
-            .Must(ids => ids.Count == ids.Distinct().Count())
-            .WithMessage(AppErrors.Validation.DuplicatesInList("LocationIds").Serialize())
-            .NotEmpty().WithMessage(AppErrors.Validation.CannotBeEmpty("LocationIds").Serialize());
+        RuleFor(c => new { ParentId = c.Request.ParentId, DepartmentId = c.DepartmentId })
+            .Must(items => items.DepartmentId != items.ParentId)
+            .WithMessage(AppErrors.Hierarchy.CannotAddSelfAsAParent().Serialize());
     }
 }

@@ -48,9 +48,9 @@ public class DepartmentsRepository : IDepartmentsRepository
         return result;
     }
 
-    public async Task<bool> IsIdentifierExistAsync(string identifier, CancellationToken cancellationToken)
+    public async Task<bool> IsIdentifierExistAsync(Identifier identifier, CancellationToken cancellationToken)
     {
-        return  await _dbContext.Departments.AnyAsync(d => d.Identifier.Value == identifier);
+        return  await _dbContext.Departments.AnyAsync(d => d.Identifier == identifier, cancellationToken);
     }
 
     public async Task<bool> AllExistsAsync(List<Guid> ids, CancellationToken cancellationToken)

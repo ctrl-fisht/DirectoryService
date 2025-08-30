@@ -1,6 +1,6 @@
 ﻿using DirectoryService.Application.Departments.Create;
 using DirectoryService.Application.Departments.MoveDepartment;
-using DirectoryService.Application.Departments.UpdateParent;
+using DirectoryService.Application.Departments.UpdateLocations;
 using DirectoryService.Application.Locations.Create;
 using DirectoryService.Application.Positions;
 using FluentValidation;
@@ -18,8 +18,8 @@ public static class DependencyInjection
         services.AddScoped<CreateLocationHandler>();
         
         services.AddScoped<CreateDepartmentHandler>();
+        services.AddScoped<UpdateDepartmentLocationsHandler>();
         services.AddScoped<MoveDepartmentHandler>();
-        services.AddScoped<UpdateDepartmentParentHandler>();
         
         services.AddScoped<CreatePositionHandler>();
         return services;
