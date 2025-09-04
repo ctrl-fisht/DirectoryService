@@ -21,6 +21,11 @@ public class EndpointResult<TValue> : IResult
             ? new SuccessResult<TValue>(result.Value)
             : new FailureResult(result.Error);
     }
+
+    public EndpointResult(TValue value)
+    {
+        _value = new SuccessResult<TValue>(value);
+    }
     
     public Task ExecuteAsync(HttpContext httpContext)
     {
@@ -29,4 +34,5 @@ public class EndpointResult<TValue> : IResult
 
     public static implicit operator EndpointResult<TValue>(Result<TValue, Error> result) => new(result);
     public static implicit operator EndpointResult<TValue>(Result<TValue, Errors> result) => new(result);
+    public static implicit operator EndpointResult<TValue>(TValue value) => new(value);
 }

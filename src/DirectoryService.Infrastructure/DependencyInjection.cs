@@ -1,5 +1,6 @@
 ﻿using DirectoryService.Application.Database;
 using DirectoryService.Application.Repositories;
+using DirectoryService.Infrastructure.Dapper;
 using DirectoryService.Infrastructure.EfCore;
 using DirectoryService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<ITransactionManager, EfCoreTransactionManager>();
+        services.AddScoped<IConnectionFactory, NpgsqlConnectionFactory>();
         
         services.AddScoped<ILocationsRepository, LocationsesRepository>();
         services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
