@@ -1,5 +1,11 @@
 ﻿using DirectoryService.Application.Locations.Create;
+using DirectoryService.Application.Locations.Get;
+using DirectoryService.Contracts;
 using DirectoryService.Contracts.Locations.Create;
+using DirectoryService.Contracts.Locations.Get;
+using DirectoryService.Contracts.Sorting;
+using DirectoryService.Domain.Entities;
+using DirectoryService.Presentation.Extensions;
 using DirectoryService.Presentation.Results;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,5 +29,23 @@ public class LocationsController : ApplicationController
         
         // В будущем добавить envelope
         return result;
+    }
+
+    [HttpGet]
+    public async Task<EndpointResult<GetLocationsResponse>> Get(
+        [FromQuery] GetLocationsRequest request,
+        [FromServices] GetLocationsHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetLocationsQuery()
+        {
+            Ids = request.Ids ?? [],
+            Search = request.Search,
+            IsActive = request.IsActive ?? true,
+            SortOptions = request.SortString == null ? null : request.SortString.ToSortOptions(),
+            Page = request.Page ?? PaginationConstants.DefaultPageIndex,
+            PageSize = request.PageSize ?? PaginationConstants.DefaultPageSize
+        };
+        return await handler.HandleAsync(query, cancellationToken);
     }
 }

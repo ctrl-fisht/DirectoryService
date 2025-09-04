@@ -51,6 +51,14 @@ public static partial class AppErrors
                 $"List {name} has duplicates",
                 $"{name}");
         }
+        
+        public static Error MustBeGreaterThan(string name, int min)
+        {
+            return Error.Validation(
+                "param.too.small",
+                $"Parameter '{name}' must be greater than or equal to '{min}'",
+                $"{name}");
+        }
     }
 
     public partial class General
