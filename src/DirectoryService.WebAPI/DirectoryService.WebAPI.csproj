@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>d720abea-02db-414b-a0f9-8c272df76062</UserSecretsId>
+        <RootNamespace>DirectoryService.Presentation</RootNamespace>
   </PropertyGroup>
 
     <ItemGroup>
