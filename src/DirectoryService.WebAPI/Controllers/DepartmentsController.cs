@@ -1,7 +1,9 @@
 ﻿using DirectoryService.Application.Departments.Create;
+using DirectoryService.Application.Departments.GetTopPositions;
 using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateLocations;
 using DirectoryService.Contracts.Departments.Create;
+using DirectoryService.Contracts.Departments.GetTopPositions;
 using DirectoryService.Contracts.Departments.MoveDepartment;
 using DirectoryService.Contracts.Departments.UpdateLocations;
 using DirectoryService.Presentation.Results;
@@ -57,6 +59,15 @@ public class DepartmentsController : ApplicationController
         };
 
         return await handler.HandleAsync(command, cancellationToken);
+    }
+
+    [Route("top-positions")]
+    [HttpGet]
+    public async Task<EndpointResult<GetTopPositionsResponse>> TopPositions(
+        [FromServices] GetTopPositionsHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        return await handler.HandleAsync(cancellationToken);
     }
 }
 

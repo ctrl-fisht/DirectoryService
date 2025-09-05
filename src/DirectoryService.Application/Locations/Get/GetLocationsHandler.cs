@@ -97,7 +97,7 @@ public class GetLocationsHandler
         var sql = sqlStringBuilder.ToString();
         long total = 0;
         bool assigned = false;
-        var locations = connection.Query<LocationDto, long, LocationDto>(
+        var locations = await connection.QueryAsync<LocationDto, long, LocationDto>(
             sql, 
             (location, totalCount) =>
         {
