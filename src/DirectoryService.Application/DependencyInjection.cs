@@ -1,4 +1,6 @@
 ﻿using DirectoryService.Application.Departments.Create;
+using DirectoryService.Application.Departments.GetDepartmentChildren;
+using DirectoryService.Application.Departments.GetRootsWithChildren;
 using DirectoryService.Application.Departments.GetTopPositions;
 using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateLocations;
@@ -32,6 +34,8 @@ public static class DependencyInjection
         services.AddScoped<GetLocationsHandler>();
         
         services.AddScoped<GetTopPositionsHandler>();
+        services.AddScoped<GetRootsWithChildrenHandler>();
+        services.AddScoped<GetDepartmentChildrenHandler>();
         return services;
     }    
 }
