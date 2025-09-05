@@ -1,8 +1,13 @@
 ﻿using DirectoryService.Application.Departments.Create;
+using DirectoryService.Application.Departments.GetDepartmentChildren;
+using DirectoryService.Application.Departments.GetRootsWithChildren;
 using DirectoryService.Application.Departments.GetTopPositions;
 using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateLocations;
+using DirectoryService.Contracts;
 using DirectoryService.Contracts.Departments.Create;
+using DirectoryService.Contracts.Departments.GetChildren;
+using DirectoryService.Contracts.Departments.GetRootsWithChildren;
 using DirectoryService.Contracts.Departments.GetTopPositions;
 using DirectoryService.Contracts.Departments.MoveDepartment;
 using DirectoryService.Contracts.Departments.UpdateLocations;
@@ -68,6 +73,40 @@ public class DepartmentsController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         return await handler.HandleAsync(cancellationToken);
+    }
+
+    [Route("roots")]
+    [HttpGet]
+    public async Task<EndpointResult<GetRootsWithChildrenResponse>> GetRootsWithChildren(
+        [FromQuery] GetRootsWithChildrenRequest request,
+        [FromServices] GetRootsWithChildrenHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetRootsWithChildrenQuery()
+        {
+            Page = request.Page ?? PaginationConstants.DefaultPageIndex,
+            PageSize = request.PageSize ?? PaginationConstants.DefaultPageSize,
+            Prefetch = request.Prefetch ?? PaginationConstants.DefaultPrefetch,
+        };
+        return await handler.HandleAsync(query, cancellationToken);
+    }
+
+    [Route("{parentId:Guid}/children")]
+    [HttpGet]
+    public async Task<EndpointResult<GetDepartmentChildrenResponse>> GetDepartmentChildren(
+        [FromRoute] Guid parentId,
+        [FromQuery] int? page,
+        [FromQuery] int? pageSize,
+        [FromServices] GetDepartmentChildrenHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetDepartmentChildrenQuery()
+        {
+            ParentId = parentId,
+            Page = page ?? PaginationConstants.DefaultPageIndex,
+            PageSize = pageSize ?? PaginationConstants.DefaultPageSize,
+        };
+        return await handler.HandleAsync(query, cancellationToken);
     }
 }
 
