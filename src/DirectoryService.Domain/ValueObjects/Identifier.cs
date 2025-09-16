@@ -35,6 +35,11 @@ public record Identifier
         return new Identifier(identifier.ToLower());
     }
 
+    public static Identifier CreateDeleted(Identifier identifier)
+    {
+        return new Identifier(Constants.SoftDeletedLabel + identifier.Value);
+    }
+
     public static Identifier CreateFromDb(string identifier)
     {
         return new Identifier(identifier);

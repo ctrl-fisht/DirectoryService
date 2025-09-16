@@ -26,6 +26,7 @@ public class Department
         var utcNow = DateTime.UtcNow;
         CreatedAt = utcNow;
         UpdatedAt = utcNow;
+        DeletedAt = null;
     }
 
     public Guid Id { get; private set; }
@@ -38,6 +39,7 @@ public class Department
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; } 
     public DateTime UpdatedAt { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
 
 
     
@@ -108,6 +110,57 @@ public class Department
         Path = newPathResult.Value;
         return UnitResult.Success<Error>();
     }
+
+    public UnitResult<Error> Deactivate()
+    {
+        if (!IsActive)
+            return AppErrors.Domain.Department.AlreadyDeactivated();
+        
+        IsActive = false;
+        DeletedAt = DateTime.UtcNow;
+        
+        var oldIdentifier = Identifier;
+        Identifier = Identifier.CreateDeleted(Identifier);
+        
+        var newPath = DepartmentPath.CreateDeleted(oldIdentifier.Value, Path);
+        
+        Path = newPath;
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> Activate()
+    {
+        if (IsActive)
+            return AppErrors.Domain.Department.AlreadyActivated();
+
+        var oldDeletedAt = DeletedAt;
+        var oldIdentifier = Identifier;
+        
+        IsActive = true;
+        DeletedAt = null;
+        
+        
+        var activeIdentifierResult = Identifier.Create(Identifier.Value.Replace(Constants.SoftDeletedLabel, ""));
+        if (activeIdentifierResult.IsFailure)
+        {
+            IsActive = false;
+            DeletedAt = oldDeletedAt;
+            return activeIdentifierResult.Error;    
+        }
+        Identifier = activeIdentifierResult.Value;
+        
+        var newPathResult = DepartmentPath.Create(Path.Value.Replace(oldIdentifier.Value, Identifier.Value));
+        if (newPathResult.IsFailure)
+        {
+            IsActive = false;
+            DeletedAt = oldDeletedAt;
+            Identifier = oldIdentifier;
+            return newPathResult.Error;
+        }
+        Path = newPathResult.Value;
+        return UnitResult.Success<Error>();
+    }
+    
     public static Result<Department, Error> Create(
         DepartmentName departmentName,
         Identifier identifier,

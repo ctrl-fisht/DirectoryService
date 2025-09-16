@@ -14,6 +14,7 @@ public class Location
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
 
     private readonly List<DepartmentLocation> _departmentLocations = [];
     public IReadOnlyList<DepartmentLocation> DepartmentLocations => _departmentLocations.AsReadOnly();
@@ -45,6 +46,7 @@ public class Location
         var utcNow = DateTime.UtcNow;
         CreatedAt = utcNow;
         UpdatedAt = utcNow;
+        DeletedAt = null;
     }
 
     public static Result<Location, Error> Create(LocationName locationName, Address address, Timezone timezone)

@@ -40,6 +40,12 @@ public record DepartmentPath
         return new DepartmentPath(path.ToLower());
     }
 
+    public static DepartmentPath CreateDeleted(string oldIdentifier, DepartmentPath path)
+    {
+        var newPath = path.Value.Replace(oldIdentifier, $"{Constants.SoftDeletedLabel}{oldIdentifier}");
+        return new DepartmentPath(newPath);
+    }
+
     public static DepartmentPath CreateFromDb(string path)
     {
         return new DepartmentPath(path);

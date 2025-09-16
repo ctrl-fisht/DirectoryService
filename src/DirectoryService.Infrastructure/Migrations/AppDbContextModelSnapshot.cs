@@ -35,9 +35,25 @@ namespace DirectoryService.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("name");
+
                     b.Property<int>("Depth")
                         .HasColumnType("integer")
                         .HasColumnName("depth");
+
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("identifier");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
@@ -55,28 +71,6 @@ namespace DirectoryService.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
-
-                    b.ComplexProperty<Dictionary<string, object>>("DepartmentName", "DirectoryService.Domain.Entities.Department.DepartmentName#DepartmentName", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(150)
-                                .HasColumnType("character varying(150)")
-                                .HasColumnName("name");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("Identifier", "DirectoryService.Domain.Entities.Department.Identifier#Identifier", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(150)
-                                .HasColumnType("character varying(150)")
-                                .HasColumnName("identifier");
-                        });
 
                     b.HasKey("Id");
 
@@ -138,6 +132,10 @@ namespace DirectoryService.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")

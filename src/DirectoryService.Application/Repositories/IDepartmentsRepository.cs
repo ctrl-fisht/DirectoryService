@@ -17,5 +17,6 @@ public interface IDepartmentsRepository
     Task<UnitResult<Error>> MoveDepartmentAsync(
         Department departmentUpdated,
         DepartmentPath oldPath, CancellationToken cancellationToken);
+    Task<UnitResult<Error>> UpdateChildPaths(Department department, string oldPath, CancellationToken cancellationToken);
     Task<UnitResult<Error>> SaveChangesAsync(CancellationToken cancellationToken); 
 }

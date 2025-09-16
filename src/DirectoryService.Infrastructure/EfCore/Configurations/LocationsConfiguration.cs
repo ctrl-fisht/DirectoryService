@@ -90,6 +90,10 @@ public class LocationsConfiguration : IEntityTypeConfiguration<Location>
             .HasColumnName("updated_at")
             .IsRequired();
         
+        builder.Property(d => d.DeletedAt)
+            .HasColumnName("deleted_at")
+            .IsRequired();
+        
         // relationships configuration
         // one-to-many часть связи Many-To-Many с departments
         builder.HasMany(l => l.DepartmentLocations)

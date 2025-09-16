@@ -1,4 +1,5 @@
 ﻿using DirectoryService.Application.Departments.Create;
+using DirectoryService.Application.Departments.Deactivate;
 using DirectoryService.Application.Departments.GetDepartmentChildren;
 using DirectoryService.Application.Departments.GetRootsWithChildren;
 using DirectoryService.Application.Departments.GetTopPositions;
@@ -107,6 +108,21 @@ public class DepartmentsController : ApplicationController
             PageSize = pageSize ?? PaginationConstants.DefaultPageSize,
         };
         return await handler.HandleAsync(query, cancellationToken);
+    }
+
+    [Route("{id:Guid}")]
+    [HttpDelete]
+    public async Task<EndpointResult<Guid>> Deactivate(
+        [FromRoute] Guid id,
+        [FromServices] DeactivateDepartmentHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new DeactivateDepartmentCommand()
+        {
+            Id = id
+        };
+        
+        return await handler.HandleAsync(command, cancellationToken);
     }
 }
 
