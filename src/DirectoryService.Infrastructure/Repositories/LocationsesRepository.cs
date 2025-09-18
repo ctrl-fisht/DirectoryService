@@ -44,6 +44,34 @@ public class LocationsesRepository : ILocationsRepository
         return await _dbContext.Locations.AnyAsync(l => l.Address == address, cancellationToken);
     }
 
+    public async Task<UnitResult<Error>> DeactivateExclusivesToDepartmentAsync(
+        Guid departmentId,
+        List<Guid> locationIds,
+        CancellationToken cancellationToken)
+    { 
+        var utcNow = DateTime.UtcNow;
+
+        var query = _dbContext.Locations
+            .Where(l => locationIds.Contains(l.Id))
+            .Where(l => !l.DepartmentLocations
+                .Any(dl => dl.DepartmentId != departmentId && dl.Department!.IsActive));
+        try
+        {
+            var updated = await query.ExecuteUpdateAsync(setters => setters
+                    .SetProperty(l => l.IsActive, false)
+                    .SetProperty(l => l.DeletedAt, utcNow),
+                cancellationToken);
+
+            return UnitResult.Success<Error>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while deactivating locations");
+            return AppErrors.Database.ErrorWhileUpdating("locations");
+        }
+        
+    }
+
     public async Task<bool> AllExistsAsync(List<Guid> locations, CancellationToken cancellationToken)
     {
         var count = await _dbContext.Locations

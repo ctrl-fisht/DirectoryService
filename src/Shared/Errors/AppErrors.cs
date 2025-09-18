@@ -96,6 +96,11 @@ public static partial class AppErrors
         {
             return Error.Failure("database.error", $"Error while adding '{record}'");
         }
+
+        public static Error ErrorWhileUpdating(string record)
+        {
+            return Error.Failure("database.error", $"Error while updating '{record}'");
+        }
         
         public static Error ErrorWhileSavingChanges()
         {
@@ -143,6 +148,23 @@ public static partial class AppErrors
         public static Error CannotAddChildAsAncestor()
         {
             return Error.Failure("cannot.add.ancestor", "Cannot add child as ancestor");
+        }
+    }
+
+    public partial class Domain
+    {
+        public static class Department
+        {
+            public static Error AlreadyDeactivated()
+            {
+                return Error.Failure("already.deactivated", "This department is already deactivated");
+            }
+            public static Error AlreadyActivated()
+            {
+                return Error.Failure("already.activated", "This department is already activated");
+            }
+            
+            
         }
     }
 }

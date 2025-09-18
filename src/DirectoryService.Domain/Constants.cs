@@ -2,6 +2,7 @@
 
 public static class Constants
 {
+    public const string SoftDeletedLabel = "deleted-";
     public static class DepartmentConstants
     {
 

@@ -42,7 +42,7 @@ public class DepartmentsRepository : IDepartmentsRepository
         var result = await _dbContext.Departments
             .Include(d => d.DepartmentLocations)
             .Include(d => d.DepartmentPositions)
-            .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(d => d.Id == id && d.IsActive == true, cancellationToken);
         if (result == null)
             return AppErrors.General.NotFound(id.ToString());
         return result;
@@ -151,6 +151,26 @@ public class DepartmentsRepository : IDepartmentsRepository
             newDepth = departmentUpdated.Depth
         });
 
+        return UnitResult.Success<Error>();
+    }
+
+    public async Task<UnitResult<Error>> UpdateChildPaths(Department department, string oldPath, CancellationToken cancellationToken)
+    {
+        var conn = _dbContext.Database.GetDbConnection();
+
+        const string sql =
+            """
+                UPDATE departments
+                SET path = REPLACE(path::text, @oldPath, @newPath)::ltree
+                WHERE path <@ @oldPath::ltree;
+            """;
+
+        await conn.ExecuteAsync(sql, new
+        {
+            oldPath = oldPath,
+            newPath = department.Path.Value
+        });
+        
         return UnitResult.Success<Error>();
     }
 
