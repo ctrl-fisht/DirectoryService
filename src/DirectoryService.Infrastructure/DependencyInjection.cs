@@ -1,5 +1,6 @@
 ﻿using DirectoryService.Application.Database;
 using DirectoryService.Application.Repositories;
+using DirectoryService.Infrastructure.CleanupBackgroundService;
 using DirectoryService.Infrastructure.Dapper;
 using DirectoryService.Infrastructure.EfCore;
 using DirectoryService.Infrastructure.Repositories;
@@ -26,6 +27,10 @@ public static class DependencyInjection
         services.AddScoped<ILocationsRepository, LocationsesRepository>();
         services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
         services.AddScoped<IPositionsRepository, PositionsRepository>();
+        
+        // Cleanup Departments Background Service
+        services.AddHostedService<CleanupDepartmentsBackgroundService>();
+        services.Configure<CleanupDepartmentsOptions>(configuration.GetSection("CleanupDepartmentsOptions"));
         
         return services;
     }
