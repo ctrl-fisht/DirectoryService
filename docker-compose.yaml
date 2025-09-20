@@ -31,6 +31,18 @@ services:
       - "8081:80"
     volumes:
       - seq-data:/data
+  ds-api:
+    build:
+      context: src/DirectoryService.WebAPI
+      dockerfile: Dockerfile
+    container_name: ds-api
+    ports:
+      - "5000:8080"
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "DOTNET_RUNNING_IN_CONTAINER=true"
+      - "DOTNET_USE_POLLING_FILE_WATCHER=true"
+      - "ConnectionStrings__Postgres=Host=database;Port=5432;Username=postgres;Password=postgres;Database=directory_service"
 volumes:
   postgres_data:
   seq-data:
