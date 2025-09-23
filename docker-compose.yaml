@@ -31,6 +31,14 @@ services:
       - "8081:80"
     volumes:
       - seq-data:/data
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
   ds-api:
     build:
       context: src/DirectoryService.WebAPI
@@ -38,11 +46,17 @@ services:
     container_name: ds-api
     ports:
       - "5000:8080"
+    depends_on:
+      - database
+      - seq
+      - redis
     environment:
       - "ASPNETCORE_ENVIRONMENT=Development"
       - "DOTNET_RUNNING_IN_CONTAINER=true"
       - "DOTNET_USE_POLLING_FILE_WATCHER=true"
       - "ConnectionStrings__Postgres=Host=database;Port=5432;Username=postgres;Password=postgres;Database=directory_service"
+      - "ConnectionStrings__Redis=redis"
 volumes:
   postgres_data:
   seq-data:
+  redis_data:

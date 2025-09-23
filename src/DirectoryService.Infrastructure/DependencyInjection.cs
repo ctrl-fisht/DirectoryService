@@ -7,6 +7,7 @@ using DirectoryService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Caching;
 
 namespace DirectoryService.Infrastructure;
 
@@ -21,6 +22,8 @@ public static class DependencyInjection
             options.UseNpgsql(connString);
         });
 
+        services.AddDistributedCache(configuration);
+
         services.AddScoped<ITransactionManager, EfCoreTransactionManager>();
         services.AddScoped<IConnectionFactory, NpgsqlConnectionFactory>();
         
@@ -31,6 +34,23 @@ public static class DependencyInjection
         // Cleanup Departments Background Service
         services.AddHostedService<CleanupDepartmentsBackgroundService>();
         services.Configure<CleanupDepartmentsOptions>(configuration.GetSection("CleanupDepartmentsOptions"));
+        
+        return services;
+    }
+
+    public static IServiceCollection AddDistributedCache(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        string redisString = configuration.GetConnectionString("Redis")
+                             ?? throw new ArgumentNullException(nameof(redisString));
+        
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = redisString;
+        });
+
+        services.AddSingleton<ICacheService, CacheService>();
         
         return services;
     }

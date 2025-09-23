@@ -2,9 +2,11 @@
 using DirectoryService.Application.Extensions;
 using DirectoryService.Application.Repositories;
 using DirectoryService.Contracts.Departments.Create;
+using DirectoryService.Domain;
 using DirectoryService.Domain.Entities;
 using DirectoryService.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
+using Shared.Caching;
 using Shared.Errors;
 
 namespace DirectoryService.Application.Departments.Create;
@@ -14,17 +16,20 @@ public class CreateDepartmentHandler
     private readonly CreateDepartmentValidator _validator;
     private readonly IDepartmentsRepository _departmentsRepository;
     private readonly ILocationsRepository _locationsesRepository;
+    private readonly ICacheService _cacheService;
     private readonly ILogger<CreateDepartmentHandler> _logger;
     
     public CreateDepartmentHandler(
         CreateDepartmentValidator validator,
         IDepartmentsRepository departmentsRepository,
         ILocationsRepository locationsesRepository,
+        ICacheService cacheService,
         ILogger<CreateDepartmentHandler> logger)
     {
         _validator = validator;
         _departmentsRepository = departmentsRepository;
         _locationsesRepository = locationsesRepository;
+        _cacheService = cacheService;
         _logger = logger;
     }
 
@@ -95,8 +100,11 @@ public class CreateDepartmentHandler
         if (saveResult.IsFailure)
             return saveResult.Error.ToErrors();
         
+        // инвалидируем кэш
+        await _cacheService.RemoveByPrefixAsync(Constants.DepartmentConstants.CachePrefix, cancellationToken);
+        
         _logger.LogInformation(
-            "Department {DepartmentName} was created, id={Id}, identifier={Identifier}",
+            "Department {@DepartmentName} was created, id={@Id}, identifier={@Identifier}",
             department.DepartmentName.Value,
             department.Id,
             department.Identifier.Value);

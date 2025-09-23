@@ -55,7 +55,7 @@ public class CleanupDepartmentsBackgroundService : BackgroundService
                 delay = TimeSpan.FromHours(_options.IntervalHours);
             }
 
-            await Task.Delay(delay);
+            await Task.Delay(delay, stoppingToken);
         }
     }
 

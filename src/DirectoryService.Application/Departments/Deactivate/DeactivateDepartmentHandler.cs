@@ -2,8 +2,10 @@
 using DirectoryService.Application.Database;
 using DirectoryService.Application.Extensions;
 using DirectoryService.Application.Repositories;
+using DirectoryService.Domain;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using Shared.Caching;
 using Shared.Errors;
 
 namespace DirectoryService.Application.Departments.Deactivate;
@@ -14,6 +16,7 @@ public class DeactivateDepartmentHandler
     private readonly IDepartmentsRepository _departmentsRepository;
     private readonly ILocationsRepository _locationsRepository;
     private readonly ITransactionManager _transactionManager;
+    private readonly ICacheService _cacheService;
     private readonly ILogger<DeactivateDepartmentHandler> _logger;
     
     public DeactivateDepartmentHandler(
@@ -21,13 +24,15 @@ public class DeactivateDepartmentHandler
         IDepartmentsRepository departmentsRepository,
         ITransactionManager transactionManager,
         ILocationsRepository locationsRepository,
+        ICacheService cacheService,
         ILogger<DeactivateDepartmentHandler> logger)
     {
         _validator = validator;
         _departmentsRepository = departmentsRepository;
-        _logger = logger;
         _locationsRepository = locationsRepository;
         _transactionManager = transactionManager;
+        _cacheService = cacheService;
+        _logger = logger;
     }
 
     public async Task<Result<Guid, Errors>> HandleAsync(
@@ -81,6 +86,14 @@ public class DeactivateDepartmentHandler
         var commitResult = transaction.Commit(cancellationToken);
         if (commitResult.IsFailure)
             return commitResult.Error.ToErrors();
+        
+        // инвалидируем кэш
+        await _cacheService.RemoveByPrefixAsync(Constants.DepartmentConstants.CachePrefix, cancellationToken);
+        
+        _logger.LogInformation(
+            "Department {@DepartmentId} has been deactivated, deactivated locations {@LocationsIds}",
+            department.Id,
+            locationIds);
         
         return department.Id;
     }
