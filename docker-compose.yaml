@@ -41,7 +41,7 @@ services:
     restart: always
   ds-api:
     build:
-      context: src/DirectoryService.WebAPI
+      context: DirectoryService/src/DirectoryService.WebAPI
       dockerfile: Dockerfile
     container_name: ds-api
     ports:

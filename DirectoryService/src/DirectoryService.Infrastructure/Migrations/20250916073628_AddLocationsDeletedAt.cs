@@ -15,7 +15,7 @@ namespace DirectoryService.Infrastructure.Migrations
                 name: "deleted_at",
                 table: "locations",
                 type: "timestamp with time zone",
-                nullable: false,
+                nullable: true,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
 
