@@ -3,6 +3,6 @@
 namespace DirectoryService.Contracts.Departments.GetTopPositions;
 
 public record GetTopPositionsResponse
-{
-        public required List<DepartmentWithPositionsDto> DepartmentWithPositions { get; set; }
+{ 
+    public required List<DepartmentWithPositionsDto> DepartmentWithPositions { get; set; }
 }

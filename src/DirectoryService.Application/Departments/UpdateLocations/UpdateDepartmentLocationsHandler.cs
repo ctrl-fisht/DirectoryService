@@ -1,9 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Application.Extensions;
 using DirectoryService.Application.Repositories;
+using DirectoryService.Domain;
 using DirectoryService.Domain.Entities;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using Shared.Caching;
 using Shared.Errors;
 
 namespace DirectoryService.Application.Departments.UpdateLocations;
@@ -13,18 +15,21 @@ public class UpdateDepartmentLocationsHandler
     private readonly IDepartmentsRepository _departmentRepository;
     private readonly ILocationsRepository _locationsRepository;
     private readonly IValidator<UpdateDepartmentLocationsCommand> _validator;
+    private readonly ICacheService _cacheService;
     private readonly ILogger<UpdateDepartmentLocationsHandler> _logger;
     
     public UpdateDepartmentLocationsHandler(
         IDepartmentsRepository departmentRepository,
         ILocationsRepository locationsRepository,
         IValidator<UpdateDepartmentLocationsCommand> validator,
+        ICacheService cacheService,
         ILogger<UpdateDepartmentLocationsHandler> logger)
     {
         _departmentRepository = departmentRepository;
         _locationsRepository = locationsRepository;
         _validator = validator;
         _logger = logger;
+        _cacheService = cacheService;
     }
     
     public async Task<Result<Guid, Errors>> HandleAsync(
@@ -61,7 +66,14 @@ public class UpdateDepartmentLocationsHandler
         var saveChangesResult = await _departmentRepository.SaveChangesAsync(cancellationToken);
         if (saveChangesResult.IsFailure)
             return saveChangesResult.Error.ToErrors();
-
+        
+        // инвалидируем кэш
+        await _cacheService.RemoveByPrefixAsync(Constants.DepartmentConstants.CachePrefix, cancellationToken);
+        
+        _logger.LogInformation("Department {@DepartmentId} locations has been updated new locations: {@LocationIds}",
+            department.Id,
+            locationsCommand.Request.LocationIds);
+        
         return department.Id;
     }
 }

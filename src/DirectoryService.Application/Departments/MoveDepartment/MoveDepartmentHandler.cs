@@ -2,9 +2,11 @@
 using DirectoryService.Application.Database;
 using DirectoryService.Application.Extensions;
 using DirectoryService.Application.Repositories;
+using DirectoryService.Domain;
 using DirectoryService.Domain.Entities;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using Shared.Caching;
 using Shared.Errors;
 
 namespace DirectoryService.Application.Departments.MoveDepartment;
@@ -14,17 +16,20 @@ public class MoveDepartmentHandler
     private readonly IValidator<MoveDepartmentCommand> _validator;
     private readonly ITransactionManager _transactionManager;
     private readonly IDepartmentsRepository _departmentsRepository;
+    private readonly ICacheService _cacheService;
     private readonly ILogger<MoveDepartmentHandler> _logger;
     
     public MoveDepartmentHandler(
         IValidator<MoveDepartmentCommand> validator,
         ITransactionManager transactionManager, 
         IDepartmentsRepository departmentsRepository, 
+        ICacheService cacheService,
         ILogger<MoveDepartmentHandler> logger)
     {
         _validator = validator;
         _transactionManager = transactionManager;
         _departmentsRepository = departmentsRepository;
+        _cacheService = cacheService;
         _logger = logger;
     }
 
@@ -109,6 +114,9 @@ public class MoveDepartmentHandler
         if (commitResult.IsFailure)
             return commitResult.Error.ToErrors();
 
+        // инвалидируем кэш
+        await _cacheService.RemoveByPrefixAsync(Constants.DepartmentConstants.CachePrefix, cancellationToken);
+        
         _logger.LogInformation(
             "Parent successfully updated Department id='{@Id}' new parent_id={@ParentId}",
             department.Id,

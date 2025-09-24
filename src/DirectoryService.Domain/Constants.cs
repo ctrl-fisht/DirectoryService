@@ -12,6 +12,7 @@ public static class Constants
         public const int IdentifierMinLength = 3;
         public const int IdentifierMaxLength = 150;
 
+        public const string CachePrefix = "departments_";
     }    
     
     public static class PositionConstants

@@ -5,7 +5,11 @@ using DirectoryService.Application.Extensions;
 using DirectoryService.Contracts.Departments.GetRootsWithChildren;
 using DirectoryService.Contracts.Dtos;
 using FluentValidation;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.VisualBasic;
+using Shared.Caching;
 using Shared.Errors;
+using Constants = DirectoryService.Domain.Constants;
 
 namespace DirectoryService.Application.Departments.GetRootsWithChildren;
 
@@ -13,13 +17,16 @@ public class GetRootsWithChildrenHandler
 {
     private readonly IConnectionFactory _connectionFactory;
     private readonly IValidator<GetRootsWithChildrenQuery> _validator;
+    private readonly ICacheService _cacheService;
     
     public GetRootsWithChildrenHandler(
         IConnectionFactory connectionFactory,
-        IValidator<GetRootsWithChildrenQuery> validator)
+        IValidator<GetRootsWithChildrenQuery> validator,
+        ICacheService cacheService)
     {
         _connectionFactory = connectionFactory;
         _validator = validator;
+        _cacheService = cacheService;
     }
 
     public async Task<Result<GetRootsWithChildrenResponse, Errors>> HandleAsync(
@@ -30,6 +37,18 @@ public class GetRootsWithChildrenHandler
         if (!validationResult.IsValid)
             return validationResult.Errors.ToAppErrors();
 
+        // Достаём с кэша
+        var cacheKey =
+            Constants.DepartmentConstants.CachePrefix
+            + "getRootsWithChildren?"
+            + $"page={query.Page}"
+            + $"pageSize={query.PageSize}"
+            + $"prefetch={query.Prefetch}";
+        var cachedDepartments =
+            await _cacheService.GetAsync<List<DepartmentWithChildrenDto>>(cacheKey, cancellationToken);
+        if (cachedDepartments is not null)
+            return new GetRootsWithChildrenResponse() { Roots = cachedDepartments };
+        
         var connection = await _connectionFactory.CreateConnectionAsync();
 
         const string sql =
@@ -100,7 +119,17 @@ public class GetRootsWithChildrenHandler
             if (childrenDict.TryGetValue(root.Id, out var children))
                 root.Children.AddRange(children);
         }
-
+        
+        // Кладём в кэш
+        await _cacheService.SetAsync(
+            cacheKey,
+            roots,
+            new DistributedCacheEntryOptions()
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            },
+            cancellationToken);
+        
         return new GetRootsWithChildrenResponse()
         {
             Roots = roots

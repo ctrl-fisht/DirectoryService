@@ -4,7 +4,10 @@ using DirectoryService.Application.Database;
 using DirectoryService.Application.Extensions;
 using DirectoryService.Contracts.Departments.GetChildren;
 using DirectoryService.Contracts.Dtos;
+using DirectoryService.Domain;
 using FluentValidation;
+using Microsoft.Extensions.Caching.Distributed;
+using Shared.Caching;
 using Shared.Errors;
 
 namespace DirectoryService.Application.Departments.GetDepartmentChildren;
@@ -13,13 +16,15 @@ public class GetDepartmentChildrenHandler
 {
     private readonly IValidator<GetDepartmentChildrenQuery> _validator;
     private readonly IConnectionFactory _connectionFactory;
-    
+    private readonly ICacheService _cacheService;
     public GetDepartmentChildrenHandler(
         IValidator<GetDepartmentChildrenQuery> validator,
-        IConnectionFactory connectionFactory)
+        IConnectionFactory connectionFactory,
+        ICacheService cacheService)
     {
         _validator = validator;
         _connectionFactory = connectionFactory;
+        _cacheService = cacheService;
     }
 
     public async Task<Result<GetDepartmentChildrenResponse, Errors>> HandleAsync(
@@ -30,6 +35,17 @@ public class GetDepartmentChildrenHandler
         if (!validationResult.IsValid)
             return validationResult.Errors.ToAppErrors();
 
+        // Достаём из кэша
+        var cacheKey = Constants.DepartmentConstants.CachePrefix
+                       + "getDepartmentChildren?"
+                       + $"page={query.Page}"
+                       + $"pageSize={query.PageSize}"
+                       + $"parentId={query.ParentId}";
+        var cachedDepartments =
+            await _cacheService.GetAsync<List<DepartmentWithChildrenDto>>(cacheKey, cancellationToken);
+        if (cachedDepartments is not null)
+            return new GetDepartmentChildrenResponse() { Departments = cachedDepartments };
+        
         var connection = await _connectionFactory.CreateConnectionAsync();
 
         const string sql =
@@ -53,8 +69,18 @@ public class GetDepartmentChildrenHandler
             Limit = query.PageSize,
             Offset = (query.Page - 1) *  query.PageSize
         });
+        var listedResult = result.ToList();
+        
+        // Кладём в кэш
+        await _cacheService.SetAsync(
+            cacheKey,
+            listedResult,
+            new DistributedCacheEntryOptions()
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            },
+            cancellationToken);
 
-
-        return new GetDepartmentChildrenResponse() { Departments = result.ToList() };
+        return new GetDepartmentChildrenResponse() { Departments = listedResult.ToList() };
     }
 }
