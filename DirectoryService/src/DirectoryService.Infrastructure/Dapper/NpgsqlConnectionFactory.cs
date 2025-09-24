@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using DirectoryService.Application.Database;
+using Shared.Core.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;

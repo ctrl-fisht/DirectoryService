@@ -1,4 +1,5 @@
-﻿using DirectoryService.Contracts.Sorting;
+﻿using Shared.Kernel.Sorting;
+
 
 namespace DirectoryService.Contracts.Locations.Get;
 

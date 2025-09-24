@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Domain.Entities;
 

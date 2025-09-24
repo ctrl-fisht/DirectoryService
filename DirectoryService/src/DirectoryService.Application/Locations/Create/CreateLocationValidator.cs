@@ -1,8 +1,8 @@
-﻿using DirectoryService.Application.Extensions;
+﻿using Shared.Core.Validation;
 using DirectoryService.Domain;
 using DirectoryService.Domain.ValueObjects;
 using FluentValidation;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Application.Locations.Create;
 

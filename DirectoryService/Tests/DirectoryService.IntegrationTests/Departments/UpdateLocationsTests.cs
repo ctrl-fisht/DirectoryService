@@ -3,7 +3,7 @@ using DirectoryService.Application.Departments.UpdateLocations;
 using DirectoryService.Contracts.Departments.UpdateLocations;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.IntegrationTests.Departments;
 

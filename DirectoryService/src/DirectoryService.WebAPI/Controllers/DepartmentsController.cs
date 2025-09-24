@@ -12,8 +12,9 @@ using DirectoryService.Contracts.Departments.GetRootsWithChildren;
 using DirectoryService.Contracts.Departments.GetTopPositions;
 using DirectoryService.Contracts.Departments.MoveDepartment;
 using DirectoryService.Contracts.Departments.UpdateLocations;
-using DirectoryService.Presentation.Results;
+using Shared.Framework.Results;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Framework;
 
 namespace DirectoryService.Presentation.Controllers;
 

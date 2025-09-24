@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.WebAPI", "src\DirectoryService.WebAPI\DirectoryService.WebAPI.csproj", "{843D22C9-7A1C-4E33-BC62-38B26522DDE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{F36AF91D-F306-40BB-98DD-27810B9CFC91}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{84315DA6-F991-481A-BF22-8A3A567782E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.IntegrationTests", "Tests\DirectoryService.IntegrationTests\DirectoryService.IntegrationTests.csproj", "{3188F4BF-CB2A-4193-9E86-05B7575E34C3}"
@@ -22,6 +20,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerCompose", "DockerCompose", "{C3E34941-88B8-4D67-90B5-6DB0BB4EED19}"
 	ProjectSection(SolutionItems) = preProject
 		..\docker-compose.yaml = ..\docker-compose.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildProps", "BuildProps", "{D67FDCFF-DB23-456C-BBFF-CB75D7C9B7CC}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Global
@@ -53,10 +56,6 @@ Global
 		{843D22C9-7A1C-4E33-BC62-38B26522DDE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{843D22C9-7A1C-4E33-BC62-38B26522DDE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{843D22C9-7A1C-4E33-BC62-38B26522DDE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F36AF91D-F306-40BB-98DD-27810B9CFC91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F36AF91D-F306-40BB-98DD-27810B9CFC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F36AF91D-F306-40BB-98DD-27810B9CFC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F36AF91D-F306-40BB-98DD-27810B9CFC91}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3188F4BF-CB2A-4193-9E86-05B7575E34C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3188F4BF-CB2A-4193-9E86-05B7575E34C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3188F4BF-CB2A-4193-9E86-05B7575E34C3}.Release|Any CPU.ActiveCfg = Release|Any CPU

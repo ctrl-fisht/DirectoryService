@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Entities;
 using DirectoryService.Domain.ValueObjects;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Application.Repositories;
 

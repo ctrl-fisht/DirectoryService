@@ -1,4 +1,4 @@
-﻿using DirectoryService.Application.Database;
+﻿using Shared.Core.Database;
 using DirectoryService.Application.Repositories;
 using DirectoryService.Infrastructure.CleanupBackgroundService;
 using DirectoryService.Infrastructure.Dapper;
@@ -7,7 +7,7 @@ using DirectoryService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Caching;
+using Shared.Core.Caching;
 
 namespace DirectoryService.Infrastructure;
 

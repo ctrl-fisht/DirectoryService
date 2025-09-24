@@ -1,6 +1,6 @@
 ﻿using DirectoryService.Contracts;
 using FluentValidation;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Application.Departments.GetRootsWithChildren;
 

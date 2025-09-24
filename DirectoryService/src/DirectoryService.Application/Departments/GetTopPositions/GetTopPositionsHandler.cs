@@ -1,10 +1,10 @@
 ﻿using Dapper;
-using DirectoryService.Application.Database;
+using Shared.Core.Database;
 using DirectoryService.Contracts.Departments.GetTopPositions;
 using DirectoryService.Contracts.Dtos;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.VisualBasic;
-using Shared.Caching;
+using Shared.Core.Caching;
 using Constants = DirectoryService.Domain.Constants;
 
 namespace DirectoryService.Application.Departments.GetTopPositions;

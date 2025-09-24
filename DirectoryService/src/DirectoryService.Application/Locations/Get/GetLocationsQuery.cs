@@ -1,7 +1,5 @@
 ﻿using DirectoryService.Contracts;
-using DirectoryService.Contracts.Locations.Get;
-using DirectoryService.Contracts.Sorting;
-
+using Shared.Kernel.Sorting;
 namespace DirectoryService.Application.Locations.Get;
 
 public record GetLocationsQuery

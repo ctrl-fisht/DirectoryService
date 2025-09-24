@@ -1,14 +1,14 @@
 ﻿using CSharpFunctionalExtensions;
 using Dapper;
-using DirectoryService.Application.Database;
-using DirectoryService.Application.Extensions;
+using Shared.Core.Database;
+using Shared.Core.Validation;
 using DirectoryService.Contracts.Departments.GetChildren;
 using DirectoryService.Contracts.Dtos;
 using DirectoryService.Domain;
 using FluentValidation;
 using Microsoft.Extensions.Caching.Distributed;
-using Shared.Caching;
-using Shared.Errors;
+using Shared.Core.Caching;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Application.Departments.GetDepartmentChildren;
 

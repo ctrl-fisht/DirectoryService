@@ -3,11 +3,10 @@ using DirectoryService.Application.Locations.Get;
 using DirectoryService.Contracts;
 using DirectoryService.Contracts.Locations.Create;
 using DirectoryService.Contracts.Locations.Get;
-using DirectoryService.Contracts.Sorting;
-using DirectoryService.Domain.Entities;
-using DirectoryService.Presentation.Extensions;
-using DirectoryService.Presentation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Framework;
+using Shared.Framework.Results;
+using Shared.Framework.SortingExtensions;
 
 namespace DirectoryService.Presentation.Controllers;
 

@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using DirectoryService.Contracts;
 using FluentValidation;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Application.Locations.Get;
 

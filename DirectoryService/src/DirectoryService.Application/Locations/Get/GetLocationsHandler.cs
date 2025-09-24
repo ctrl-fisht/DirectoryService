@@ -1,13 +1,15 @@
 ﻿using System.Text;
 using CSharpFunctionalExtensions;
-using DirectoryService.Application.Database;
-using DirectoryService.Application.Extensions;
+using Shared.Core.Database;
+using Shared.Core.Validation;
 using DirectoryService.Contracts.Locations.Get;
 using FluentValidation;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 using Dapper;
 using DirectoryService.Contracts.Dtos;
-using DirectoryService.Contracts.Sorting;
+
+using Shared.Kernel.Sorting;
+
 
 namespace DirectoryService.Application.Locations.Get;
 

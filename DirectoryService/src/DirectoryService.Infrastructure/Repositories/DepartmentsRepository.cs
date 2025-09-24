@@ -4,7 +4,7 @@ using DirectoryService.Domain.Entities;
 using DirectoryService.Infrastructure.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 using Dapper;
 using DirectoryService.Domain.ValueObjects;
 

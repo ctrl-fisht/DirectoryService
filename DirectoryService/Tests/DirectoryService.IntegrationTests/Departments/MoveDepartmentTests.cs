@@ -4,7 +4,7 @@ using DirectoryService.Contracts.Departments.MoveDepartment;
 using DirectoryService.Domain.ValueObjects;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.IntegrationTests.Departments;
 

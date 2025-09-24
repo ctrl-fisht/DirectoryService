@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using DirectoryService.Application.Database;
+using Shared.Core.Database;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Infrastructure.EfCore;
 

@@ -1,4 +1,4 @@
-﻿using DirectoryService.Application.Database;
+﻿using Shared.Core.Database;
 using DirectoryService.Infrastructure.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

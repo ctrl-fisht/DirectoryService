@@ -1,12 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
-using DirectoryService.Application.Database;
-using DirectoryService.Application.Extensions;
+using Shared.Core.Validation;
 using DirectoryService.Application.Repositories;
 using DirectoryService.Domain;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.Caching;
-using Shared.Errors;
+using Shared.Core.Database;
+using Shared.Core.Caching;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Application.Departments.Deactivate;
 

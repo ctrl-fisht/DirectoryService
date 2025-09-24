@@ -5,7 +5,7 @@ using DirectoryService.Domain.ValueObjects;
 using DirectoryService.Infrastructure.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Shared.Errors;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Infrastructure.Repositories;
 

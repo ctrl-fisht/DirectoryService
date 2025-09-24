@@ -1,13 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
-using DirectoryService.Application.Extensions;
 using DirectoryService.Application.Repositories;
-using DirectoryService.Contracts.Departments.Create;
 using DirectoryService.Domain;
 using DirectoryService.Domain.Entities;
 using DirectoryService.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
-using Shared.Caching;
-using Shared.Errors;
+using Shared.Core.Caching;
+using Shared.Core.Validation;
+using Shared.Kernel.Errors;
 
 namespace DirectoryService.Application.Departments.Create;
 
