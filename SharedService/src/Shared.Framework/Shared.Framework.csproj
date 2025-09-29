@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>Shared.Framework</PackageId>
+        <Version>1.0.1</Version>
+        <Authors>ctrlfisht</Authors>
+        <Company>Company</Company>
+        <Description>Shared framework for ASP.NET Core</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/ctrl-fisht/microservices</RepositoryUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <ProjectReference Include="..\Shared.Kernel\Shared.Kernel.csproj" />
+    </ItemGroup>
+</Project>
