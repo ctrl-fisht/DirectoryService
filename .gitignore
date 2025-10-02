@@ -3,6 +3,9 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# http files
+*.http
+
 # NuGet credentials
 nuget.config
 

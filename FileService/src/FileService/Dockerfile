@@ -5,6 +5,7 @@ EXPOSE 8080
 EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 ARG BUILD_CONFIGURATION=Release
@@ -26,21 +27,17 @@ RUN echo '<?xml version="1.0" encoding="utf-8"?> \
   </packageSourceCredentials> \
 </configuration>' > nuget.config
 
-COPY ["src/DirectoryService.WebAPI/DirectoryService.WebAPI.csproj", "src/DirectoryService.WebAPI/"]
-COPY ["src/DirectoryService.Application/DirectoryService.Application.csproj", "src/DirectoryService.Application/"]
-COPY ["src/DirectoryService.Contracts/DirectoryService.Contracts.csproj", "src/DirectoryService.Contracts/"]
-COPY ["src/DirectoryService.Domain/DirectoryService.Domain.csproj", "src/DirectoryService.Domain/"]
-COPY ["src/DirectoryService.Infrastructure/DirectoryService.Infrastructure.csproj", "src/DirectoryService.Infrastructure/"]
-RUN dotnet restore "src/DirectoryService.WebAPI/DirectoryService.WebAPI.csproj"
+COPY ["src/FileService/FileService.csproj", "src/FileService/"]
+RUN dotnet restore "src/FileService/FileService.csproj"
 COPY . .
-WORKDIR "/src/src/DirectoryService.WebAPI"
-RUN dotnet build "./DirectoryService.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/src/FileService"
+RUN dotnet build "./FileService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./DirectoryService.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./FileService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DirectoryService.WebAPI.dll"]
+ENTRYPOINT ["dotnet", "FileService.dll"]
